@@ -1,0 +1,13 @@
+import SlideKit
+import SwiftUI
+
+@MainActor
+public struct SlideConfiguration {
+  public let size = SlideSize.standard16_9
+
+  public let slideIndexController = SlideIndexController {
+    TitleSlide()
+  }
+
+  public init() {}
+}
