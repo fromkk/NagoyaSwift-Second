@@ -11,19 +11,31 @@ let package = Package(
   ],
   products: [
     .library(
+      name: "MarkdownToView",
+      targets: ["MarkdownToView"]
+    ),
+    .library(
       name: "NagoyaSwiftSlides",
       targets: ["NagoyaSwiftSlides"]
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/mtj0928/SlideKit", branch: "main")
+    .package(url: "https://github.com/mtj0928/SlideKit", branch: "main"),
+    .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.7.3"),
   ],
   targets: [
     .target(
+      name: "MarkdownToView",
+      dependencies: [
+        .product(name: "Markdown", package: "swift-markdown"),
+      ]
+    ),
+    .target(
       name: "NagoyaSwiftSlides",
       dependencies: [
-        .product(name: "SlideKit", package: "SlideKit")
+        "MarkdownToView",
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
-    )
+    ),
   ]
 )

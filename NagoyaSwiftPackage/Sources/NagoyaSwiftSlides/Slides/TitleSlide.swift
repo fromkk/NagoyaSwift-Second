@@ -1,3 +1,4 @@
+import MarkdownToView
 import SlideKit
 import SwiftUI
 
@@ -6,11 +7,13 @@ struct TitleSlide: View {
   var shouldHideIndex: Bool { true }
 
   var body: some View {
-    VStack(spacing: 24) {
-      Text("Nagoya.swift #2")
-        .font(.system(size: 120, weight: .bold))
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    MarkdownToView.convert(
+      """
+      # Nagoya.swift
+
+      ## Swift Conference in Nagoya, Japan
+      """
+    )
   }
 }
 
