@@ -7,6 +7,7 @@ public struct SlideConfiguration {
 
   public let slideIndexController = SlideIndexController {
     TitleSlide()
+    ProfileSlide()
   }
 
   public init() {}

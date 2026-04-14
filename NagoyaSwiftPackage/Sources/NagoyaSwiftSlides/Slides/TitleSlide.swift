@@ -7,11 +7,10 @@ struct TitleSlide: View {
   var shouldHideIndex: Bool { true }
 
   var body: some View {
-    MarkdownToView.convert(
+    let parser = MarkdownToSlide()
+    parser.parsePage(
       """
       # Nagoya.swift
-
-      ## Swift Conference in Nagoya, Japan
       """
     )
   }

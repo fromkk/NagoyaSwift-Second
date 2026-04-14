@@ -28,6 +28,7 @@ let package = Package(
       name: "MarkdownToView",
       dependencies: [
         .product(name: "Markdown", package: "swift-markdown"),
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
     .target(
