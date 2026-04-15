@@ -23,8 +23,7 @@ public struct MarkdownToSlide {
   }
 
   /// 画像プリロード付きの非同期パース（PDF生成など、確実に画像が必要な場合に使用）
-  public func withImagePreload(_ markdown: String) async -> [(AnyView, String)]
-  {
+  public func withImagePreload(_ markdown: String) async -> [(AnyView, String)] {
     let (processedMarkdown, scripts) = extractScripts(from: markdown)
 
     // 画像URLを事前にキャッシュ

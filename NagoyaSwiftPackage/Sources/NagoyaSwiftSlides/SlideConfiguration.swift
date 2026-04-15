@@ -8,7 +8,15 @@ public struct SlideConfiguration {
   public let slideIndexController = SlideIndexController {
     TitleSlide()
     ProfileSlide()
+    AboutType()
   }
 
   public init() {}
+}
+
+#Preview {
+  let configuration = SlideConfiguration()
+  SlideScreen(slideSize: configuration.size) {
+    SlideRouterView(slideIndexController: configuration.slideIndexController)
+  }
 }
