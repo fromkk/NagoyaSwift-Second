@@ -29,17 +29,11 @@
         return
       }
 
-      let contentView = ZStack {
-        PresentationView(slideSize: configuration.size) {
-          SlideRouterView(
-            slideIndexController: configuration.slideIndexController
-          )
-        }
-        .slideTheme(theme)
-      }
-
       window = UIWindow(windowScene: windowScene)
-      window?.rootViewController = UIHostingController(rootView: contentView)
+      window?.rootViewController = UIHostingController(
+        rootView: SlideNavigationView(configuration: configuration)
+          .slideTheme(theme)
+      )
       window?.makeKeyAndVisible()
     }
   }

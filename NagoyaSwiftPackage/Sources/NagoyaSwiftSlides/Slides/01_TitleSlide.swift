@@ -16,6 +16,8 @@ struct TitleSlide: View {
       )
     }
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

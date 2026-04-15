@@ -25,9 +25,7 @@ struct ProfileSlide: View {
     }
   }
 
-  var transition: any Transition {
-    .push(from: .trailing)
-  }
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {
