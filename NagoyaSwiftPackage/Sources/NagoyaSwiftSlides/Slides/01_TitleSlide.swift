@@ -10,7 +10,7 @@ struct TitleSlide: View {
     let parser = MarkdownToSlide()
     parser.parsePage(
       """
-      # Nagoya.swift
+      # Turning Markdown into Slides with swift-markdown and SlideKit
       """
     )
   }

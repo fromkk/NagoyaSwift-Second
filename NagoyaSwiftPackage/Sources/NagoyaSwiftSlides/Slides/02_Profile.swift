@@ -7,6 +7,7 @@ struct ProfileSlide: View {
   var body: some View {
     let parser = MarkdownToSlide()
     parser.parsePage("""
+    # Profile
     ```
     struct Profile {
       let name = "Kazuya Ueoka"
@@ -20,6 +21,8 @@ struct ProfileSlide: View {
     ```
     """)
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

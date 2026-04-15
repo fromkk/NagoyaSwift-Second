@@ -59,7 +59,7 @@ private struct HeadingView: View {
 
   var body: some View {
     let text = heading.children
-      .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+      .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
 
     text.font(theme.fontForHeadingLevel(heading.level))
       .foregroundColor(theme.primaryTextColor)
@@ -97,7 +97,7 @@ private struct ParagraphView: View {
     } else if hasImages && hasText {
       // テキストと画像が混在
       paragraph.children
-        .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+        .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         .font(theme.bodyFont)
         .foregroundColor(theme.primaryTextColor)
         .tint(theme.linkColor)
@@ -111,7 +111,7 @@ private struct ParagraphView: View {
     } else {
       // テキストのみ
       paragraph.children
-        .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+        .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         .font(theme.bodyFont)
         .foregroundColor(theme.primaryTextColor)
         .tint(theme.linkColor)

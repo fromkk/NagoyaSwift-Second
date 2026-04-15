@@ -128,7 +128,7 @@ extension Markup {
       .compactMap { child -> SwiftUI.Text? in
         if let paragraph = child as? Paragraph {
           return paragraph.children
-            .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+            .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         }
         return nil
       }
@@ -136,7 +136,7 @@ extension Markup {
         if result == SwiftUI.Text("") {
           return text
         } else {
-          return result + SwiftUI.Text(" ") + text
+          return SwiftUI.Text("\(result) \(text)")
         }
       }
   }

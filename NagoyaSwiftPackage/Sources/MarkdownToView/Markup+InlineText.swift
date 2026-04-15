@@ -15,18 +15,18 @@ extension Markup {
       return SwiftUI.Text(text.string)
     case let strong as Strong:
       return strong.children
-        .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+        .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         .bold()
     case let emphasis as Emphasis:
       return emphasis.children
-        .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+        .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         .italic()
     case let inlineCode as InlineCode:
       return SwiftUI.Text(inlineCode.code)
         .font(.system(.body, design: .monospaced))
     case let strikethrough as Strikethrough:
       return strikethrough.children
-        .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+        .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
         .strikethrough()
     case let link as Markdown.Link:
       // リンクテキストを子要素から抽出
