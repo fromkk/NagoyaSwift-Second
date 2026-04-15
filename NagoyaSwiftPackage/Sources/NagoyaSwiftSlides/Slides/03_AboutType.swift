@@ -23,7 +23,9 @@ struct AboutType: View {
   private let parser = MarkdownToSlide()
 
   var body: some View {
-    parser.parsePage(markdown)
+    SlideWrapper {
+      parser.parsePage(markdown)
+    }
   }
 
   var transition: AnyTransition = .push(from: .trailing)

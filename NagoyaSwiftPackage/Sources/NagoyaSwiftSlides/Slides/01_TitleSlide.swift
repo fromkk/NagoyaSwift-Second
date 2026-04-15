@@ -7,12 +7,14 @@ struct TitleSlide: View {
   var shouldHideIndex: Bool { true }
 
   var body: some View {
-    let parser = MarkdownToSlide()
-    parser.parsePage(
-      """
-      # Turning Markdown into Slides with swift-markdown and SlideKit
-      """
-    )
+    SlideWrapper {
+      let parser = MarkdownToSlide()
+      parser.parsePage(
+        """
+        # Turning Markdown into Slides with swift-markdown and SlideKit
+        """
+      )
+    }
   }
 }
 

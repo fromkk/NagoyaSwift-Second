@@ -1,24 +1,30 @@
+import MarkdownToView
 import NagoyaSwiftSlides
 import SlideKit
 import SwiftUI
 
-@main
+#if !canImport(UIKit)
+  @main
+#endif
 struct NagoyaSwiftApp: App {
   private static let configuration = SlideConfiguration()
+  let theme: MarkdownToView.SlideTheme = .default
 
   var presentationContentView: some View {
     SlideRouterView(
       slideIndexController: Self.configuration.slideIndexController
     )
-    .background(Color.white)
-    .foregroundStyle(Color.black)
   }
 
   var body: some Scene {
     WindowGroup {
       PresentationView(slideSize: Self.configuration.size) {
-        presentationContentView
+        ZStack {
+          theme.backgroundColor
+          presentationContentView
+        }
       }
+      .slideTheme(theme)
     }
     #if os(macOS)
       .setupAsPresentationWindow(
