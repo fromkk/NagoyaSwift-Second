@@ -1,5 +1,5 @@
 #if canImport(UIKit)
-  import MarkdownToView
+  import MarkdownToSlide
   import NagoyaSwiftSlides
   import OSLog
   import SlideKit
@@ -12,7 +12,7 @@
       category: "AppDelegate"
     )
 
-    let theme: MarkdownToView.SlideTheme = .default
+    let theme: MarkdownToSlide.SlideTheme = .default
     var window: UIWindow?
 
     func scene(

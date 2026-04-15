@@ -11,8 +11,8 @@ let package = Package(
   ],
   products: [
     .library(
-      name: "MarkdownToView",
-      targets: ["MarkdownToView"]
+      name: "MarkdownToSlide",
+      targets: ["MarkdownToSlide"]
     ),
     .library(
       name: "NagoyaSwiftSlides",
@@ -25,7 +25,7 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "MarkdownToView",
+      name: "MarkdownToSlide",
       dependencies: [
         .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "SlideKit", package: "SlideKit"),
@@ -34,7 +34,7 @@ let package = Package(
     .target(
       name: "NagoyaSwiftSlides",
       dependencies: [
-        "MarkdownToView",
+        "MarkdownToSlide",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),

@@ -1,4 +1,4 @@
-import MarkdownToView
+import MarkdownToSlide
 import SlideKit
 import SwiftUI
 
@@ -13,6 +13,7 @@ struct SlideWrapper<Content: View>: View {
   var body: some View {
     ScrollView {
       content()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     .background(slideTheme.backgroundColor)
   }

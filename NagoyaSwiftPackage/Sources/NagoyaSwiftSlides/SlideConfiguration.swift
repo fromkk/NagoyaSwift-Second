@@ -9,6 +9,8 @@ public struct SlideConfiguration {
     TitleSlide()
     ProfileSlide()
     AboutType()
+    AboutMarkdown()
+    AboutStructure()
   }
 
   public init() {}

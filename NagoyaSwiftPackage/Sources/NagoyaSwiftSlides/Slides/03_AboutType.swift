@@ -1,9 +1,11 @@
-import MarkdownToView
+import MarkdownToSlide
 import SlideKit
 import SwiftUI
 
 @Slide
 struct AboutType: View {
+  @Environment(\.slideTheme) var slideTheme
+
   let markdown: String = """
     # About # Type
 
@@ -20,13 +22,13 @@ struct AboutType: View {
     基本無料で利用可能です。
     """
 
-  private let parser = MarkdownToSlide()
+  private let converter = MarkdownToSlideConverter()
 
   var body: some View {
     SlideWrapper {
       HStack(alignment: .top) {
         VStack(alignment: .leading) {
-          parser.parsePage(markdown)
+          converter.convertPage(markdown)
 
           Image(.typeQr)
             .resizable()
@@ -37,7 +39,7 @@ struct AboutType: View {
           Image(.typeSs)
         }
       }
-      .padding(48)
+      .padding(slideTheme.contentPadding)
     }
   }
 

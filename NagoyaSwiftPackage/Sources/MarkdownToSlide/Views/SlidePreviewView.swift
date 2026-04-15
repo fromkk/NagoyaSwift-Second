@@ -10,7 +10,7 @@ public struct SlidePreviewView: View {
 
   public init(markdown: String) {
     self.markdown = markdown
-    let markdownToSlide = MarkdownToSlide()
+    let markdownToSlide = MarkdownToSlideConverter()
     let slidesWithScripts = markdownToSlide(markdown)
     self.slides = slidesWithScripts.map { $0.0 }
   }

@@ -1,4 +1,4 @@
-import MarkdownToView
+import MarkdownToSlide
 import SlideKit
 import SwiftUI
 
@@ -8,8 +8,8 @@ struct TitleSlide: View {
 
   var body: some View {
     SlideWrapper {
-      let parser = MarkdownToSlide()
-      parser.parsePage(
+      let converter = MarkdownToSlideConverter()
+      converter.convertPage(
         """
         # Turning Markdown into Slides with swift-markdown and SlideKit
         """

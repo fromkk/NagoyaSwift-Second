@@ -7,7 +7,7 @@ import SwiftUI
 #endif
 
 @MainActor
-public struct MarkdownToSlide {
+public struct MarkdownToSlideConverter {
   public init() {}
 
   public func callAsFunction(_ markdown: String) -> [(AnyView, String)] {
@@ -17,7 +17,7 @@ public struct MarkdownToSlide {
     return views
   }
 
-  public func parsePage(_ markdown: String) -> AnyView {
+  public func convertPage(_ markdown: String) -> AnyView {
     let doc = Document(parsing: markdown)
     return AnyView(doc.children.toView)
   }
@@ -136,7 +136,7 @@ public struct MarkdownToSlide {
 
 #if canImport(Playgrounds)
   #Playground {
-    let parser = MarkdownToSlide()
-    let views = parser("![image](https://placehold.jp/1280x780.png)")
+    let converter = MarkdownToSlideConverter()
+    let views = converter("![image](https://placehold.jp/1280x780.png)")
   }
 #endif

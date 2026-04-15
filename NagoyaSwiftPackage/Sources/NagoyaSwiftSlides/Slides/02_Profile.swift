@@ -1,4 +1,4 @@
-import MarkdownToView
+import MarkdownToSlide
 import SlideKit
 import SwiftUI
 
@@ -6,8 +6,8 @@ import SwiftUI
 struct ProfileSlide: View {
   var body: some View {
     SlideWrapper {
-      let parser = MarkdownToSlide()
-      parser.parsePage(
+      let converter = MarkdownToSlideConverter()
+      converter.convertPage(
         """
         # Profile
         ```

@@ -1,4 +1,4 @@
-import MarkdownToView
+import MarkdownToSlide
 import NagoyaSwiftSlides
 import SlideKit
 import SwiftUI
@@ -8,7 +8,7 @@ import SwiftUI
 #endif
 struct NagoyaSwiftApp: App {
   private static let configuration = SlideConfiguration()
-  let theme: MarkdownToView.SlideTheme = .default
+  let theme: MarkdownToSlide.SlideTheme = .default
 
   var presentationContentView: some View {
     SlideRouterView(
