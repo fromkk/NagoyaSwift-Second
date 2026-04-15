@@ -22,6 +22,7 @@
           }
       )
       .focusable()
+      .focusEffectDisabled(true)
       .focused($isFocused)
       .onKeyPress(.rightArrow) {
         Task { @MainActor in configuration.slideIndexController.forward() }

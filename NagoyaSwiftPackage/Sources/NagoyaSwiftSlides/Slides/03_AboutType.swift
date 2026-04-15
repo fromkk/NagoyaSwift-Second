@@ -24,7 +24,20 @@ struct AboutType: View {
 
   var body: some View {
     SlideWrapper {
-      parser.parsePage(markdown)
+      HStack(alignment: .top) {
+        VStack(alignment: .leading) {
+          parser.parsePage(markdown)
+
+          Image(.typeQr)
+            .resizable()
+            .frame(width: 400, height: 400)
+        }
+
+        VStack {
+          Image(.typeSs)
+        }
+      }
+      .padding(48)
     }
   }
 
