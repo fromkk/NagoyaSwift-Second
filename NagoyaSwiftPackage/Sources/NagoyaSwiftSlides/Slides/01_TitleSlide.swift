@@ -18,6 +18,10 @@ struct TitleSlide: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    Turning Markdown into Slides with swift-markdown and SlideKit ということで、swift-markdown と SlideKit を使って Markdown をスライドにする方法をお話しします。 
+    """
 }
 
 #Preview {

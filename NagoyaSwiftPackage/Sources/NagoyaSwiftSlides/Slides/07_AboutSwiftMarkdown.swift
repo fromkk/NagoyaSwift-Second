@@ -1,0 +1,42 @@
+import MarkdownToSlide
+import SlideKit
+import SwiftUI
+
+@Slide
+struct AboutSwiftMarkdown: View {
+  let converter = MarkdownToSlideConverter()
+
+  var script: String = """
+    swift-markdownはAppleが開発しているオープンソースのMarkdownパーサーです。
+    swift-package-managerのドキュメント生成にも使われています。
+    CommonMark仕様に準拠しており、Swiftネイティブで型安全なASTを提供します。
+    さらにGitHub Flavored Markdownの拡張仕様にも対応しています。
+    テーブルやタスクリスト、打ち消し線なども扱えます。
+    """
+
+  var body: some View {
+    SlideWrapper {
+      converter.convertPage("""
+        # About swift-markdown
+
+        - Apple が開発するオープンソースライブラリ
+        - swift-package-manager のドキュメント生成にも採用
+        - **CommonMark 準拠**
+        - **GitHub Flavored Markdown (GFM) 拡張にも対応**
+          - テーブル・タスクリスト・打ち消し線など
+        - Swiftネイティブ・型安全なAST
+        - https://github.com/swiftlang/swift-markdown
+        """)
+    }
+  }
+
+  var transition: AnyTransition {
+    .push(from: .trailing)
+  }
+}
+
+#Preview {
+  SlidePreview {
+    AboutSwiftMarkdown()
+  }
+}

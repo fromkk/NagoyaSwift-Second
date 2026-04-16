@@ -10,7 +10,14 @@ public struct SlideConfiguration {
     ProfileSlide()
     AboutType()
     AboutMarkdown()
+    AboutCommonMark()
     AboutStructure()
+    AboutSwiftMarkdown()
+    HowToUse()
+    AboutMarkupVisitor()
+    MakeUI()
+    ConvertToSlide()
+    Summary()
   }
 
   public init() {}

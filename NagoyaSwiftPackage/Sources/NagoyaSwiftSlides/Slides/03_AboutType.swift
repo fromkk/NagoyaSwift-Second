@@ -16,8 +16,8 @@ struct AboutType: View {
     """
 
   var script: String = """
-    前提としてTypeについてお話しします。
-    Typeは2017年にリリースしたシンプルなMarkdownエディターです。
+    今回はMarkdownをスライドとして表示する機能を導入した# Typeについてお話しします。
+    # Typeは2017年にリリースしたシンプルなMarkdownエディターです。
     SwiftとUIKit製のアプリです。最近のアプデでSwiftUIを利用する箇所も出てきています。
     基本無料で利用可能です。
     """
@@ -32,7 +32,7 @@ struct AboutType: View {
 
           Image(.typeQr)
             .resizable()
-            .frame(width: 400, height: 400)
+            .frame(width: 350, height: 350)
         }
 
         VStack {

@@ -113,6 +113,7 @@
               "\(slideIndexController.currentIndex + 1) / \(slideIndexController.slides.count)"
             )
             .monospacedDigit()
+            .fixedSize()
           }
 
           ToolbarItem(placement: .bottomBar) {

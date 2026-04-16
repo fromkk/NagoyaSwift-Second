@@ -9,7 +9,7 @@ struct AboutMarkdown: View {
     
     ## Markdown.pl
     
-    - John Gruber が2004年に作成した **独自テキストをHTMLに変換するツール** から始まった
+    - John Gruber と Aaron Swartz が共同で2004年に作成した **独自テキストをHTMLに変換するツール** から始まった
     - 元々はウェブライター向けのテキスト・HTML変換ツール
     - 可能な限り読みやすくするために設計された
     - https://daringfireball.net/projects/markdown/

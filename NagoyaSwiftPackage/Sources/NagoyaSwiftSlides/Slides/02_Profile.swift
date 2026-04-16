@@ -26,6 +26,13 @@ struct ProfileSlide: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    植岡　和哉と申します。
+    iOSアプリを作る仕事をしています。
+    インターネットでは @fromkk というアカウントで活動しているのでよかったらフォローしてください。
+    カメラで写真を撮るのが好きです。
+    """
 }
 
 #Preview {
