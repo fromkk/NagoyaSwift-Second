@@ -27,35 +27,42 @@ extension Markup {
     let hasNestedList = listItem.children.contains {
       $0 is UnorderedList || $0 is OrderedList
     }
+    let url = listItem.containedURL
 
-    if !hasNestedList {
-      Item(label: {
-        listItemTextView(listItem)
-      })
-    } else {
-      Item(label: {
-        listItemTextView(listItem)
-      }) {
-        ForEach(Array(listItem.children.enumerated()), id: \.offset) {
-          _,
-          child in
-          if let unorderedList = child as? UnorderedList {
-            ForEach(Array(unorderedList.listItems.enumerated()), id: \.offset) {
-              _,
-              nestedItem in
-              listItemView(nestedItem)
-            }
-          } else if let orderedList = child as? OrderedList {
-            ForEach(Array(orderedList.listItems.enumerated()), id: \.offset) {
-              index,
-              nestedItem in
-              orderedListItemView(
-                nestedItem,
-                index: index + Int(orderedList.startIndex)
-              )
+    VStack(alignment: .leading, spacing: 8) {
+      if !hasNestedList {
+        Item(label: {
+          listItemTextView(listItem)
+        })
+      } else {
+        Item(label: {
+          listItemTextView(listItem)
+        }) {
+          ForEach(Array(listItem.children.enumerated()), id: \.offset) {
+            _,
+            child in
+            if let unorderedList = child as? UnorderedList {
+              ForEach(Array(unorderedList.listItems.enumerated()), id: \.offset) {
+                _,
+                nestedItem in
+                listItemView(nestedItem)
+              }
+            } else if let orderedList = child as? OrderedList {
+              ForEach(Array(orderedList.listItems.enumerated()), id: \.offset) {
+                index,
+                nestedItem in
+                orderedListItemView(
+                  nestedItem,
+                  index: index + Int(orderedList.startIndex)
+                )
+              }
             }
           }
         }
+      }
+
+      if let url {
+        LinkPreviewView(url: url)
       }
     }
   }
@@ -66,41 +73,48 @@ extension Markup {
     let hasNestedList = listItem.children.contains {
       $0 is UnorderedList || $0 is OrderedList
     }
+    let url = listItem.containedURL
 
-    if !hasNestedList {
-      Item(
-        accessory: .number(index),
-        label: {
-          listItemTextView(listItem)
-        }
-      )
-    } else {
-      Item(
-        accessory: .number(index),
-        label: {
-          listItemTextView(listItem)
-        }
-      ) {
-        ForEach(Array(listItem.children.enumerated()), id: \.offset) {
-          _,
-          child in
-          if let unorderedList = child as? UnorderedList {
-            ForEach(Array(unorderedList.listItems.enumerated()), id: \.offset) {
-              _,
-              nestedItem in
-              listItemView(nestedItem)
-            }
-          } else if let orderedList = child as? OrderedList {
-            ForEach(Array(orderedList.listItems.enumerated()), id: \.offset) {
-              nestedIndex,
-              nestedItem in
-              orderedListItemView(
-                nestedItem,
-                index: nestedIndex + Int(orderedList.startIndex)
-              )
+    VStack(alignment: .leading, spacing: 8) {
+      if !hasNestedList {
+        Item(
+          accessory: .number(index),
+          label: {
+            listItemTextView(listItem)
+          }
+        )
+      } else {
+        Item(
+          accessory: .number(index),
+          label: {
+            listItemTextView(listItem)
+          }
+        ) {
+          ForEach(Array(listItem.children.enumerated()), id: \.offset) {
+            _,
+            child in
+            if let unorderedList = child as? UnorderedList {
+              ForEach(Array(unorderedList.listItems.enumerated()), id: \.offset) {
+                _,
+                nestedItem in
+                listItemView(nestedItem)
+              }
+            } else if let orderedList = child as? OrderedList {
+              ForEach(Array(orderedList.listItems.enumerated()), id: \.offset) {
+                nestedIndex,
+                nestedItem in
+                orderedListItemView(
+                  nestedItem,
+                  index: nestedIndex + Int(orderedList.startIndex)
+                )
+              }
             }
           }
         }
+      }
+
+      if let url {
+        LinkPreviewView(url: url)
       }
     }
   }

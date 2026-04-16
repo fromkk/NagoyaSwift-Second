@@ -1,5 +1,6 @@
 import Markdown
 import SwiftUI
+import WebKit
 
 struct Page {
   var elements: [any Markup] = []
@@ -34,6 +35,8 @@ private struct PageContentView: View {
         ImageOnlyLayout(elements: elements, theme: theme)
       case .mixed:
         MixedContentLayout(elements: elements, theme: theme)
+      case .urlOnly:
+        URLOnlyLayout(elements: elements, theme: theme)
       case .standard:
         StandardLayout(elements: elements, theme: theme)
       }
@@ -167,6 +170,41 @@ private struct MixedContentLayout: View {
     }
 
     return images
+  }
+}
+
+// MARK: - URL-Only Layout
+
+private struct URLOnlyLayout: View {
+  let elements: [any Markup]
+  let theme: SlideTheme
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: theme.blockSpacing) {
+      ForEach(Array(headings.enumerated()), id: \.offset) { _, heading in
+        AnyView(heading.toBlockView)
+      }
+
+      if let url = urlParagraph?.singleURL {
+        Text(url.absoluteString)
+          .font(theme.bodyFont)
+          .foregroundColor(theme.linkColor)
+
+        WebView(url: url)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+          .clipShape(RoundedRectangle(cornerRadius: 8))
+      }
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .padding(theme.contentPadding)
+  }
+
+  private var headings: [any Markup] {
+    elements.compactMap { $0 as? Heading }
+  }
+
+  private var urlParagraph: Paragraph? {
+    elements.compactMap { $0 as? Paragraph }.first
   }
 }
 

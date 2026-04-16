@@ -38,5 +38,12 @@ let package = Package(
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
+    .testTarget(
+      name: "MarkdownToSlideTests",
+      dependencies: [
+        "MarkdownToSlide",
+        .product(name: "Markdown", package: "swift-markdown"),
+      ]
+    ),
   ]
 )

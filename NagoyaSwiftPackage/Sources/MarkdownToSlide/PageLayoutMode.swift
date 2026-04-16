@@ -6,6 +6,7 @@ public enum PageLayoutMode: Sendable {
   case headingOnly  // Only headings, centered
   case imageOnly  // Only images, full-screen
   case mixed  // Text and images, split layout (60/40)
+  case urlOnly  // Heading(s) + single URL paragraph → large WebView
   case standard  // Standard vertical layout (current behavior)
 
   /// Detect layout mode from page elements
@@ -37,6 +38,14 @@ public enum PageLayoutMode: Sendable {
         }
       }
       return true  // Lists, code blocks, tables, etc.
+    }
+
+    // Check for URL-only layout: heading(s) + exactly one URL-only paragraph, nothing else
+    let paragraphs = elements.compactMap { $0 as? Paragraph }
+    let urlOnlyParagraphs = paragraphs.filter { $0.singleURL != nil }
+    let nonHeadingElements = elements.filter { !($0 is Heading) }
+    if urlOnlyParagraphs.count == 1 && nonHeadingElements.count == 1 && allImages.isEmpty {
+      return .urlOnly
     }
 
     // Layout detection logic

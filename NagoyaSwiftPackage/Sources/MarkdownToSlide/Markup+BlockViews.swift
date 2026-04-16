@@ -75,6 +75,21 @@ private struct ParagraphView: View {
   let theme: SlideTheme
 
   var body: some View {
+    // URL-only paragraph in non-urlOnly layout: show link preview card
+    if let url = paragraph.singleURL {
+      VStack(alignment: .leading, spacing: 8) {
+        Text(url.absoluteString)
+          .font(theme.bodyFont)
+          .foregroundColor(theme.linkColor)
+        LinkPreviewView(url: url)
+      }
+    } else {
+      imageOrTextContent
+    }
+  }
+
+  @ViewBuilder
+  private var imageOrTextContent: some View {
     let images = paragraph.children.compactMap { $0 as? Markdown.Image }
     let hasImages = !images.isEmpty
 
