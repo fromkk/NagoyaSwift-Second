@@ -11,6 +11,7 @@ import OSLog
     )
 
     let configuration = SlideConfiguration()
+    let store = AppStore()
 
     func application(
       _ application: UIApplication,
