@@ -4,7 +4,7 @@ import Testing
 
 @testable import MarkdownToSlide
 
-@Suite("PageLayoutMode.detect")
+@Suite("PageLayoutMode.detect", .serialized)
 struct PageLayoutModeTests {
 
   // MARK: - urlOnly
@@ -88,8 +88,7 @@ struct PageLayoutModeTests {
   @Test("Heading + URL + list is standard (multiple non-heading elements)")
   func headingURLAndList() {
     let doc = Document(
-      parsing:
-        "# Title\n\n[https://example.com](https://example.com)\n\n- item 1")
+      parsing: "# Title\n\n[https://example.com](https://example.com)\n\n- item 1")
     let elements = Array(doc.children)
     #expect(PageLayoutMode.detect(from: elements) == .standard)
   }
