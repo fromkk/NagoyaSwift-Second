@@ -21,7 +21,6 @@ struct AboutCommonMark: View {
     GitHub Flavored Markdown、MultiMarkdown、kramdownなど、それぞれが独自の拡張を持っています。
     そこでJohn MacFarlaneらが2014年にCommonMarkを策定しました。
     CommonMarkはMarkdownの曖昧さをなくし、厳密な仕様を定義したものです。
-    swift-markdownはこのCommonMarkに準拠しています。
     """
 
   var body: some View {

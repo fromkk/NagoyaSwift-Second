@@ -17,6 +17,12 @@ struct AboutMarkdown: View {
 
   let converter = MarkdownToSlideConverter()
 
+  var script: String = """
+    Markdown についてです。
+    Markdown は、John Gruber と Aaron Swartz が共同で2004年に作成した、独自テキストをHTMLに変換するツールから始まりました。
+    元々はウェブライター向けのテキスト・HTML変換ツールで、可能な限り読みやすくなるように設計されています。
+    """
+
   var body: some View {
     SlideWrapper {
       converter.convertPage(markdown)

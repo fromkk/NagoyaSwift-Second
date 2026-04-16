@@ -16,6 +16,13 @@ struct AboutStructure: View {
   @Phase
   var phase: SlidePhase
 
+  var script: String = """
+    swift-markdown のデータ構造についてです。
+    パースされた Markdown は Document を頂点とするツリー構造になっています。
+    Document の直下には見出しやリストなどの Block 要素が並び、Block の中にはテキストや太字などの Inline 要素が含まれます。
+    この3層の構造を意識することが、SwiftUI View への変換を実装する上で重要になります。
+    """
+
   let sampleMarkdown = """
     # Title
 

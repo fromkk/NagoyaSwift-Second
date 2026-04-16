@@ -23,7 +23,7 @@ extension Markup {
         .italic()
     case let inlineCode as InlineCode:
       return SwiftUI.Text(inlineCode.code)
-        .font(.system(.body, design: .monospaced))
+        .fontDesign(.monospaced)
     case let strikethrough as Strikethrough:
       return strikethrough.children
         .reduce(SwiftUI.Text("")) { SwiftUI.Text("\($0)\($1.toInlineText)") }
