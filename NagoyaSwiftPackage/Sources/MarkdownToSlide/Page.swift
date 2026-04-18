@@ -119,16 +119,14 @@ private struct MixedContentLayout: View {
     GeometryReader { geometry in
       HStack(alignment: .top, spacing: theme.blockSpacing * 2) {
         // Left side: Text content (60%)
-        ScrollView {
-          VStack(alignment: .leading, spacing: theme.blockSpacing) {
-            ForEach(Array(textElements.enumerated()), id: \.offset) {
-              _,
-              element in
-              AnyView(element.toBlockView)
-            }
+        VStack(alignment: .leading, spacing: theme.blockSpacing) {
+          ForEach(Array(textElements.enumerated()), id: \.offset) {
+            _,
+            element in
+            AnyView(element.toBlockView)
           }
-          .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .frame(width: geometry.size.width * 0.6 - theme.contentPadding * 1.5)
 
         // Right side: Images (40%)
@@ -215,15 +213,13 @@ private struct StandardLayout: View {
   let theme: SlideTheme
 
   var body: some View {
-    ScrollView {
-      VStack(alignment: .leading, spacing: theme.blockSpacing) {
-        ForEach(Array(elements.enumerated()), id: \.offset) { _, element in
-          AnyView(element.toBlockView)
-        }
-        Spacer()
+    VStack(alignment: .leading, spacing: theme.blockSpacing) {
+      ForEach(Array(elements.enumerated()), id: \.offset) { _, element in
+        AnyView(element.toBlockView)
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .padding(theme.contentPadding)
+      Spacer()
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(theme.contentPadding)
   }
 }

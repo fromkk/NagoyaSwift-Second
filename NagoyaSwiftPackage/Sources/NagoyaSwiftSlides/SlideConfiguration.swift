@@ -17,6 +17,7 @@ public struct SlideConfiguration {
     AboutParse()
     MakeUI()
     ConvertToSlide()
+    Demo()
     Summary()
   }
 

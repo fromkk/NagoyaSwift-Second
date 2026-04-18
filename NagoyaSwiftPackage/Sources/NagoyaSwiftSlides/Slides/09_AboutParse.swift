@@ -18,12 +18,17 @@ struct AboutParse: View {
       return """
         Inline の一覧がこちらです。
         """
+    case .others:
+      return """
+        他にも BlockContainer, InlineContainer というものがいます。
+        """
     }
   }
 
   enum SlidePhase: Int, PhasedState {
     case initial  // block
     case inline
+    case others
   }
 
   @Phase
@@ -77,8 +82,16 @@ struct AboutParse: View {
           - Text
           """
         )
+      case .others:
+        converter.convertPage(
+          """
+          ## その他
+          
+          - BlockContainer
+          - InlineContainer
+          """
+        )
       }
-
     }
   }
 
@@ -87,8 +100,38 @@ struct AboutParse: View {
   }
 }
 
-#Preview {
-  SlidePreview {
-    AboutParse()
+#Preview("block") {
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<AboutParse.SlidePhase>(.initial)
   }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      AboutParse()
+    }
+  )
+}
+
+#Preview("inline") {
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<AboutParse.SlidePhase>(.inline)
+  }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      AboutParse()
+    }
+  )
+}
+
+#Preview("others") {
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<AboutParse.SlidePhase>(.others)
+  }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      AboutParse()
+    }
+  )
 }
