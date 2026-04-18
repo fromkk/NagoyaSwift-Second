@@ -14,7 +14,7 @@ public struct SlideConfiguration {
     AboutSwiftMarkdown()
     AboutStructure()
     HowToUse()
-    AboutMarkupVisitor()
+    AboutParse()
     MakeUI()
     ConvertToSlide()
     Summary()

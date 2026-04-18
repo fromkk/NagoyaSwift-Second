@@ -8,10 +8,8 @@ struct Summary: View {
 
   var script: String = """
     まとめです。
-    swift-markdownはCommonMark準拠の型安全なMarkdownパーサーです。
-    MarkupVisitorを実装することでSwiftUIのViewに変換できます。
-    実際にTypeアプリのプレビュー機能で活用しています。
-    ご清聴ありがとうございました。
+
+    以上です。ご清聴ありがとうございました。
     """
 
   var body: some View {
@@ -19,11 +17,7 @@ struct Summary: View {
       converter.convertPage("""
         # Summary
 
-        - **swift-markdown** は CommonMark 準拠・型安全な Apple 製パーサー
-        - `Document(parsing:)` で AST を取得
-        - **MarkupVisitor** で各ノードを SwiftUI View に変換
-        - ListItem・SoftBreak・インラインネストに注意
-        - MarkdownエディターのプレビューにSwiftで挑戦してみよう
+        
         """)
     }
   }

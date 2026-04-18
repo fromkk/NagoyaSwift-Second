@@ -12,13 +12,19 @@ struct MakeUI: View {
 
     """
 
+  enum SlidePhase: Int, PhasedState {
+    case initial
+  }
+
+  @Phase var phase: SlidePhase
+
   var body: some View {
     SlideWrapper {
-      VStack(alignment: .leading, spacing: 32) {
-        
+      if phase == .initial {
+        converter.convertPage("""
+          - `document.children: MarkupChildren`
+          """)
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .padding(slideTheme.contentPadding)
     }
   }
 
@@ -27,7 +33,7 @@ struct MakeUI: View {
   }
 }
 
-#Preview {
+#Preview("initial") {
   SlidePreview {
     MakeUI()
   }

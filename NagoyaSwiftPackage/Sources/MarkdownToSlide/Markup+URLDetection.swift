@@ -26,14 +26,6 @@ extension ListItem {
 }
 
 private func urlFrom(markup: any Markup) -> URL? {
-  if let link = markup as? Markdown.Link,
-    let dest = link.destination,
-    let url = URL(string: dest),
-    url.scheme == "https" || url.scheme == "http"
-  {
-    return url
-  }
-
   if let text = markup as? Markdown.Text {
     let trimmed = text.string.trimmingCharacters(in: .whitespacesAndNewlines)
     if let url = URL(string: trimmed),

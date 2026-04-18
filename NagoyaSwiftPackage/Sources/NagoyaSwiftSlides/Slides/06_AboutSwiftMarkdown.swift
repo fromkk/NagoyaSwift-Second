@@ -1,9 +1,12 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
+import WebKit
 
 @Slide
 struct AboutSwiftMarkdown: View {
+  @Environment(\.slideTheme) var slideTheme
+
   let converter = MarkdownToSlideConverter()
 
   var script: String = """
@@ -15,19 +18,21 @@ struct AboutSwiftMarkdown: View {
     """
 
   var body: some View {
-    SlideWrapper {
-      converter.convertPage("""
-        # About swift-markdown
+    HStack {
+      SlideWrapper {
+        converter.convertPage("""
+          # About swift-markdown
 
-        - Apple が開発するオープンソースライブラリ
-        - swift-package-manager のドキュメント生成にも採用
-        - **CommonMark 準拠**
-        - **GitHub Flavored Markdown (GFM) 拡張にも対応**
-          - テーブル・タスクリスト・打ち消し線など
-        - Swiftネイティブ・型安全なAST
-        - https://github.com/swiftlang/swift-markdown
-        """)
+          - Apple が開発するオープンソースライブラリ
+          - swift-package-manager のドキュメント生成にも採用
+          - GitHub Flavored Markdown (GFM) 拡張に対応
+          - Swiftネイティブ・型安全なAST
+          - [https://github.com/swiftlang/swift-markdown](https://github.com/swiftlang/swift-markdown)
+          """)
+      }
+      WebView(url: URL(string: "https://github.com/swiftlang/swift-markdown"))
     }
+    .background(slideTheme.backgroundColor)
   }
 
   var transition: AnyTransition {

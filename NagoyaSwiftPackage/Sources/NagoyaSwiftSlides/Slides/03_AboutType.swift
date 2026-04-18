@@ -12,7 +12,7 @@ struct AboutType: View {
     - 2017年にリリースしたMarkdownエディター
     - Swift・UIKit製（最近のアプデはSwiftUIも）
     - 基本無料
-    - https://apps.apple.com/jp/app/type/id1214613873
+    - [https://apps.apple.com/jp/app/type/id1214613873](https://apps.apple.com/jp/app/type/id1214613873)
     """
 
   var script: String = """
