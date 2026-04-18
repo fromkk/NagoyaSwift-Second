@@ -31,6 +31,7 @@ struct MakeUI: View {
         if phase == .initial {
           converter.convertPage("""
             ```
+            let document = Document(parsing: markdown)
             let views: [AnyView] = document.blockChildren.map {
               blockHandler($0)
             }

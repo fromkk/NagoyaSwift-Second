@@ -17,12 +17,20 @@ struct AboutCommonMark: View {
 
   let converter = MarkdownToSlideConverter()
 
-  var script: String = """
-    Markdownが普及するにつれ、様々な方言が生まれました。
-    GitHub Flavored Markdown、MultiMarkdown、kramdownなど、それぞれが独自の拡張を持っています。
-    そこでJohn MacFarlaneらが2014年にCommonMarkを策定しました。
-    CommonMarkはMarkdownの曖昧さをなくし、厳密な仕様を定義したものです。
-    """
+  var script: String {
+    switch phase {
+    case .initial:
+      return """
+        Markdownが普及するにつれ、様々な方言が生まれました。
+        GitHub Flavored Markdown、MultiMarkdown、kramdownなど、それぞれが独自の拡張を持っています。
+        """
+    case .commonmark:
+      return """
+        そこでJohn MacFarlaneらが2014年にCommonMarkを策定しました。
+        CommonMarkはMarkdownの曖昧さをなくし、厳密な仕様を定義したものです。
+        """
+    }
+  }
 
   var body: some View {
 
@@ -41,29 +49,30 @@ struct AboutCommonMark: View {
           )
           .transition(.opacity)
         }
-        .background(slideTheme.backgroundColor)
       } else if phase == .commonmark {
-        HStack {
-          converter.convertPage(
-            """
-            ## CommonMark（2014年〜）
+        GeometryReader { proxy in
+          HStack {
+            converter.convertPage(
+              """
+              ## CommonMark(2014年〜)
 
-            - John MacFarlane らが策定した **厳密なMarkdown仕様**
-            - GitHubやStack Overflow、Redditなど、主要プラットフォームの開発者たちが主導
-            - 標準的で相互運用可能な「構文仕様」と、実装を検証するための「包括的なテスト」を提供
-            - [https://commonmark.org/](https://commonmark.org/)
-            """
-          )
-          .transition(.opacity)
-
-          WebView(url: URL(string: "https://commonmark.org/"))
+              - John MacFarlane らが策定した **厳密なMarkdown仕様**
+              - GitHubやStack Overflow、Redditなど、主要プラットフォームの開発者たちが主導
+              - 標準的で相互運用可能な「構文仕様」と、実装を検証するための「包括的なテスト」を提供
+              - [https://commonmark.org/](https://commonmark.org/)
+              """
+            )
+            .transition(.opacity)
+            .frame(width: proxy.size.width * 0.6)
+            WebView(url: URL(string: "https://commonmark.org/"))
+          }
         }
-        .background(slideTheme.backgroundColor)
       }
     }
+    .padding(slideTheme.contentPadding)
+    .background(slideTheme.backgroundColor)
     .animation(.easeInOut, value: phase)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .padding(slideTheme.contentPadding)
   }
 
   var transition: AnyTransition {
@@ -72,25 +81,29 @@ struct AboutCommonMark: View {
 }
 
 #Preview("initial phase") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve {
-    PhasedStateStore<AboutCommonMark.SlidePhase>(.initial)
-  }
-  return SlideRouterView(
-    slideIndexController: SlideIndexController(container: container) {
-      AboutCommonMark()
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutCommonMark.SlidePhase>(.initial)
     }
-  )
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutCommonMark()
+      }
+    )
+  }
 }
 
 #Preview("commonmark phase") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve {
-    PhasedStateStore<AboutCommonMark.SlidePhase>(.commonmark)
-  }
-  return SlideRouterView(
-    slideIndexController: SlideIndexController(container: container) {
-      AboutCommonMark()
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutCommonMark.SlidePhase>(.commonmark)
     }
-  )
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutCommonMark()
+      }
+    )
+  }
 }

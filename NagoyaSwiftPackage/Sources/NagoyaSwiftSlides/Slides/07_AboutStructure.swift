@@ -115,25 +115,41 @@ struct AboutStructure: View {
 }
 
 #Preview("document phase") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve { PhasedStateStore<AboutStructure.SlidePhase>(.document) }
-  return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
-    AboutStructure()
-  })
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutStructure.SlidePhase>(.document)
+    }
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutStructure()
+      }
+    )
+  }
 }
 
 #Preview("block phase") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve { PhasedStateStore<AboutStructure.SlidePhase>(.block) }
-  return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
-    AboutStructure()
-  })
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutStructure.SlidePhase>(.block)
+    }
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutStructure()
+      }
+    )
+  }
 }
 
 #Preview("inline phase") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve { PhasedStateStore<AboutStructure.SlidePhase>(.inline) }
-  return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
-    AboutStructure()
-  })
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve { PhasedStateStore<AboutStructure.SlidePhase>(.inline) }
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutStructure()
+      }
+    )
+  }
 }
