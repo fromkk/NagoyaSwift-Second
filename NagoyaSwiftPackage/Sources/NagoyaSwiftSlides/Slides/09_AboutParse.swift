@@ -101,37 +101,43 @@ struct AboutParse: View {
 }
 
 #Preview("block") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve {
-    PhasedStateStore<AboutParse.SlidePhase>(.initial)
-  }
-  return SlideRouterView(
-    slideIndexController: SlideIndexController(container: container) {
-      AboutParse()
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutParse.SlidePhase>(.initial)
     }
-  )
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutParse()
+      }
+    )
+  }
 }
 
 #Preview("inline") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve {
-    PhasedStateStore<AboutParse.SlidePhase>(.inline)
-  }
-  return SlideRouterView(
-    slideIndexController: SlideIndexController(container: container) {
-      AboutParse()
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutParse.SlidePhase>(.inline)
     }
-  )
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutParse()
+      }
+    )
+  }
 }
 
 #Preview("others") {
-  let container = ObservableObjectContainer()
-  _ = container.resolve {
-    PhasedStateStore<AboutParse.SlidePhase>(.others)
-  }
-  return SlideRouterView(
-    slideIndexController: SlideIndexController(container: container) {
-      AboutParse()
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<AboutParse.SlidePhase>(.others)
     }
-  )
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        AboutParse()
+      }
+    )
+  }
 }
