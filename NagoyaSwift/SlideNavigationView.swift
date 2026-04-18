@@ -16,37 +16,51 @@
     }
 
     var body: some View {
-      if let store, store.hasExternalDisplay {
+      if let store, store.hasExternalDisplay, !store.isMirroring {
         presenterView(store: store)
       } else {
-        slideView
+        slideView(store: store)
       }
     }
 
-    // MARK: - Full-screen slide view (no external display)
+    // MARK: - Full-screen slide view
 
-    private var slideView: some View {
-      PresentationView(slideSize: configuration.size) {
-        SlideRouterView(slideIndexController: slideIndexController)
-      }
-      .gesture(navigationGesture)
-      .focusable()
-      .focusEffectDisabled(true)
-      .focused($isFocused)
-      .onKeyPress(.rightArrow) {
-        Task { @MainActor in configuration.slideIndexController.forward() }
-        return .handled
-      }
-      .onKeyPress(.leftArrow) {
-        Task { @MainActor in configuration.slideIndexController.back() }
-        return .handled
-      }
-      .onKeyPress(.space) {
-        Task { @MainActor in configuration.slideIndexController.forward() }
-        return .handled
-      }
-      .onAppear {
-        isFocused = true
+    private func slideView(store: AppStore? = nil) -> some View {
+      ZStack(alignment: .topTrailing) {
+        PresentationView(slideSize: configuration.size) {
+          SlideRouterView(slideIndexController: slideIndexController)
+        }
+        .gesture(navigationGesture)
+        .focusable()
+        .focusEffectDisabled(true)
+        .focused($isFocused)
+        .onKeyPress(.rightArrow) {
+          Task { @MainActor in configuration.slideIndexController.forward() }
+          return .handled
+        }
+        .onKeyPress(.leftArrow) {
+          Task { @MainActor in configuration.slideIndexController.back() }
+          return .handled
+        }
+        .onKeyPress(.space) {
+          Task { @MainActor in configuration.slideIndexController.forward() }
+          return .handled
+        }
+        .onAppear {
+          isFocused = true
+        }
+
+        if let store, store.hasExternalDisplay {
+          Button {
+            store.isMirroring.toggle()
+          } label: {
+            Label("Presentation Mode", systemImage: "rectangle.on.rectangle")
+              .labelStyle(.iconOnly)
+          }
+          .tint(Color(.label))
+          .buttonStyle(.glass)
+          .padding()
+        }
       }
     }
 
