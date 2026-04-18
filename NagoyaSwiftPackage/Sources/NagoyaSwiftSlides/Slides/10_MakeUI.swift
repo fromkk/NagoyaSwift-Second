@@ -14,17 +14,61 @@ struct MakeUI: View {
 
   enum SlidePhase: Int, PhasedState {
     case initial
+    case block
+    case inline
   }
 
   @Phase var phase: SlidePhase
 
   var body: some View {
     SlideWrapper {
-      if phase == .initial {
-        converter.convertPage("""
-          - `document.children: MarkupChildren`
-          """)
+      VStack {
+        Text("Concept")
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .font(slideTheme.headingH2Font)
+          .padding(slideTheme.contentPadding)
+
+        if phase == .initial {
+          converter.convertPage("""
+            ```
+            let views: [AnyView] = document.blockChildren.map {
+              blockHandler($0)
+            }
+            ```
+            """)
+        } else if phase == .block {
+          converter.convertPage("""
+            ```
+            func blockHandler(_ block: any BlockMarkup) -> AnyView {
+              switch block {
+              case let heading as Heading:
+                let text = heading.inlineChildren
+                  .reduce(SwiftUI.Text("")) { SwiftUI.Text("\\($0)\\(inlineHandler($1))") }
+                return AnyView(text.font(.largeTitle))
+              ...
+              }
+            }
+            ```
+            """)
+        } else if phase == .inline {
+          converter.convertPage("""
+            ```
+            func inlineHandler(_ inline: any InlineMarkup) -> Text {
+              switch inline {
+              case let text as Markdown.Text:
+                return SwiftUI.Text(text.string)
+              case let strong as Strong:
+                return strong.inlineChildren
+                  .reduce(SwiftUI.Text("")) { SwiftUI.Text("\\($0)\\(inlineHandler($1))") }
+                  .bold()
+              ...
+              }
+            }
+            ```
+            """)
+        }
       }
+
     }
   }
 
@@ -34,7 +78,37 @@ struct MakeUI: View {
 }
 
 #Preview("initial") {
-  SlidePreview {
-    MakeUI()
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<MakeUI.SlidePhase>(.initial)
   }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      MakeUI()
+    }
+  )
+}
+
+#Preview("block") {
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<MakeUI.SlidePhase>(.block)
+  }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      MakeUI()
+    }
+  )
+}
+
+#Preview("inline") {
+  let container = ObservableObjectContainer()
+  _ = container.resolve {
+    PhasedStateStore<MakeUI.SlidePhase>(.inline)
+  }
+  return SlideRouterView(
+    slideIndexController: SlideIndexController(container: container) {
+      MakeUI()
+    }
+  )
 }
