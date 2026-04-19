@@ -19,6 +19,7 @@ public struct SlideConfiguration {
     ConvertToSlide()
     Demo()
     Summary()
+    PR()
   }
 
   public init() {}
