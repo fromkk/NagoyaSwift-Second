@@ -75,9 +75,7 @@ struct AboutCommonMark: View {
     .frame(maxWidth: .infinity, alignment: .leading)
   }
 
-  var transition: AnyTransition {
-    .push(from: .trailing)
-  }
+  var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
 
 #Preview("initial phase") {

@@ -45,9 +45,7 @@ struct HowToUse: View {
     }
   }
 
-  var transition: AnyTransition {
-    .push(from: .trailing)
-  }
+  var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
 
 #Preview {

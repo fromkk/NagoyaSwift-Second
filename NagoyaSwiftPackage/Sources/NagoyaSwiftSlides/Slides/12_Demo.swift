@@ -14,6 +14,8 @@ struct Demo: View {
       """)
     .background(slideTheme.backgroundColor)
   }
+
+  var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
 
 #Preview {

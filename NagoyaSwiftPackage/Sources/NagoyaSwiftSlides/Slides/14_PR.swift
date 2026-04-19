@@ -23,7 +23,7 @@ struct PR: View {
     .padding(slideTheme.contentPadding)
   }
 
-  var transition: AnyTransition = .opacity
+  var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
 
 #Preview {
