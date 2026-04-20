@@ -4,24 +4,53 @@ import SwiftUI
 
 @Slide
 struct ProfileSlide: View {
+  let converter = MarkdownToSlideConverter()
+  @Environment(\.slideTheme) var slideTheme
+
+  enum SlidePhase: Int, PhasedState {
+    case initial
+    case lastYear
+  }
+  @Phase var phase: SlidePhase
+
   var body: some View {
-    SlideWrapper {
-      let converter = MarkdownToSlideConverter()
-      converter.convertPage(
-        """
-        # Profile
-        ```
-        struct Profile {
-          let name = "Kazuya Ueoka"
-          let job = "iOS Developer"
-          let x = "@fromkk"
-          let github = "fromkk"
-          let note = "fromkk"
-          let basedOn = "Saitama, Japan"
-          let favorite = "Photography"
-        }
-        ```
-        """)
+    switch phase {
+    case .initial:
+      SlideWrapper {
+        converter.convertPage(
+          """
+          # Profile
+          ```
+          struct Profile {
+            let name = "Kazuya Ueoka"
+            let job = "iOS Developer"
+            let x = "@fromkk"
+            let github = "fromkk"
+            let note = "fromkk"
+            let basedOn = "Saitama, Japan"
+            let favorite = "Photography"
+          }
+          ```
+          """)
+      }
+    case .lastYear:
+      HStack {
+        converter.convertPage(
+          """
+          ## 昨年
+          
+          - Nagoya.swift #1 ではカメラマンとしてスタッフをしていました
+          - 今年は？？？
+          """
+        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+
+        Image(.lastYear)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+      }
+      .padding(slideTheme.contentPadding)
+      .background(slideTheme.backgroundColor)
     }
   }
 
@@ -35,8 +64,26 @@ struct ProfileSlide: View {
   var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
 
-#Preview {
-  SlidePreview {
-    ProfileSlide()
+#Preview("initial") {
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<ProfileSlide.SlidePhase>(.initial)
+    }
+    return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
+      ProfileSlide()
+    })
+  }
+}
+
+#Preview("fire") {
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<ProfileSlide.SlidePhase>(.lastYear)
+    }
+    return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
+      ProfileSlide()
+    })
   }
 }
