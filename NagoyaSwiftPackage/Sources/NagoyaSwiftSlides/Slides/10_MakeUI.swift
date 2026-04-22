@@ -29,7 +29,8 @@ struct MakeUI: View {
           .padding(slideTheme.contentPadding)
 
         if phase == .initial {
-          converter.convertPage("""
+          converter.convertPage(
+            """
             ```
             let document = Document(parsing: markdown)
             let views: [AnyView] = document.blockChildren.map {
@@ -38,7 +39,8 @@ struct MakeUI: View {
             ```
             """)
         } else if phase == .block {
-          converter.convertPage("""
+          converter.convertPage(
+            """
             ```
             func blockHandler(_ block: any BlockMarkup) -> AnyView {
               switch block {
@@ -52,7 +54,8 @@ struct MakeUI: View {
             ```
             """)
         } else if phase == .inline {
-          converter.convertPage("""
+          converter.convertPage(
+            """
             ```
             func inlineHandler(_ inline: any InlineMarkup) -> Text {
               switch inline {

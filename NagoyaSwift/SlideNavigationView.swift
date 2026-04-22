@@ -8,6 +8,9 @@
     var store: AppStore?
     @ObservedObject private var slideIndexController: SlideIndexController
     @FocusState private var isFocused: Bool
+    @State private var isExporting = false
+    @State private var exportURL: URL?
+    @State private var showShareSheet = false
 
     init(configuration: SlideConfiguration, store: AppStore? = nil) {
       self.configuration = configuration
@@ -20,6 +23,17 @@
         presenterView(store: store)
       } else {
         slideView(store: store)
+      }
+    }
+
+    private func startExport() {
+      isExporting = true
+      Task {
+        let url = await SlidePDFExporter().export(
+          slideIndexController: configuration.slideIndexController)
+        exportURL = url
+        isExporting = false
+        showShareSheet = url != nil
       }
     }
 
@@ -49,18 +63,40 @@
         .onAppear {
           isFocused = true
         }
+        .sheet(isPresented: $showShareSheet) {
+          if let url = exportURL {
+            ActivityView(items: [url])
+          }
+        }
 
-        if let store, store.hasExternalDisplay {
+        HStack(spacing: 8) {
           Button {
-            store.isMirroring.toggle()
+            startExport()
           } label: {
-            Label("Presentation Mode", systemImage: "rectangle.on.rectangle")
-              .labelStyle(.iconOnly)
+            if isExporting {
+              ProgressView()
+                .tint(Color(.label))
+            } else {
+              Label("Export PDF", systemImage: "doc.badge.arrow.up")
+                .labelStyle(.iconOnly)
+            }
           }
           .tint(Color(.label))
           .buttonStyle(.glass)
-          .padding()
+          .disabled(isExporting)
+
+          if let store, store.hasExternalDisplay {
+            Button {
+              store.isMirroring.toggle()
+            } label: {
+              Label("Presentation Mode", systemImage: "rectangle.on.rectangle")
+                .labelStyle(.iconOnly)
+            }
+            .tint(Color(.label))
+            .buttonStyle(.glass)
+          }
         }
+        .padding()
       }
     }
 
@@ -76,10 +112,13 @@
           .padding()
 
           ScrollView {
-            Text(slideIndexController.currentScript.isEmpty ? "（スピーカーノートなし）" : slideIndexController.currentScript)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .multilineTextAlignment(.leading)
-              .padding()
+            Text(
+              slideIndexController.currentScript.isEmpty
+                ? "（スピーカーノートなし）" : slideIndexController.currentScript
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.leading)
+            .padding()
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -102,6 +141,11 @@
         .onAppear {
           isFocused = true
         }
+        .sheet(isPresented: $showShareSheet) {
+          if let url = exportURL {
+            ActivityView(items: [url])
+          }
+        }
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
             Button {
@@ -112,6 +156,19 @@
                 systemImage: store.isMirroring ? "rectangle.on.rectangle" : "rectangle.2.swap"
               )
             }
+          }
+
+          ToolbarItem(placement: .primaryAction) {
+            Button {
+              startExport()
+            } label: {
+              if isExporting {
+                ProgressView()
+              } else {
+                Label("Export PDF", systemImage: "doc.badge.arrow.up")
+              }
+            }
+            .disabled(isExporting)
           }
 
           ToolbarItem(placement: .bottomBar) {

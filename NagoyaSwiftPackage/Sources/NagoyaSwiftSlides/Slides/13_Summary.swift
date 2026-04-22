@@ -17,7 +17,8 @@ struct Summary: View {
 
   var body: some View {
     SlideWrapper {
-      converter.convertPage("""
+      converter.convertPage(
+        """
         # Summary
 
         - `# Type` というアプリの紹介

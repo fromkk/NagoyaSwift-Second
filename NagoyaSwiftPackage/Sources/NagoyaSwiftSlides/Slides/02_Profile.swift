@@ -38,7 +38,7 @@ struct ProfileSlide: View {
         converter.convertPage(
           """
           ## 昨年
-          
+
           - Nagoya.swift #1 ではカメラマンとしてスタッフをしていました
           - 今年は？？？
           """
@@ -70,9 +70,10 @@ struct ProfileSlide: View {
     _ = container.resolve {
       PhasedStateStore<ProfileSlide.SlidePhase>(.initial)
     }
-    return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
-      ProfileSlide()
-    })
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        ProfileSlide()
+      })
   }
 }
 
@@ -82,8 +83,9 @@ struct ProfileSlide: View {
     _ = container.resolve {
       PhasedStateStore<ProfileSlide.SlidePhase>(.lastYear)
     }
-    return SlideRouterView(slideIndexController: SlideIndexController(container: container) {
-      ProfileSlide()
-    })
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        ProfileSlide()
+      })
   }
 }

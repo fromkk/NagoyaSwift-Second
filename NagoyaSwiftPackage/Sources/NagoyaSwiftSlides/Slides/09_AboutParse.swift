@@ -86,7 +86,7 @@ struct AboutParse: View {
         converter.convertPage(
           """
           ## その他
-          
+
           - BlockContainer
           - InlineContainer
           """

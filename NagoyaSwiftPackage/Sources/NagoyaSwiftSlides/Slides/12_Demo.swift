@@ -9,9 +9,11 @@ struct Demo: View {
   let converter = MarkdownToSlideConverter()
 
   var body: some View {
-    converter.convertPage("""
+    converter.convertPage(
+      """
       # Demo
-      """)
+      """
+    )
     .background(slideTheme.backgroundColor)
   }
 

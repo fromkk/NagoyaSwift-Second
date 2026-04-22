@@ -4,14 +4,14 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct AboutMarkdown: View {
+struct AboutMarkdown: View, WebPageProviding {
   @Environment(\.slideTheme) var slideTheme
 
   let markdown = """
     # About Markdown
-    
+
     ## Markdown.pl
-    
+
     - John Gruber と Aaron Swartz が共同で2004年に作成した **独自テキストをHTMLに変換するツール** から始まった
     - 元々はウェブライター向けのテキスト・HTML変換ツール
     - 可能な限り読みやすくするために設計された
@@ -19,6 +19,9 @@ struct AboutMarkdown: View {
     """
 
   let converter = MarkdownToSlideConverter()
+  let webPage = WebPage()
+
+  var webPages: [WebPage] { [webPage] }
 
   var script: String = """
     Markdown についてです。
@@ -30,7 +33,11 @@ struct AboutMarkdown: View {
     HStack {
       converter.convertPage(markdown)
         .background(slideTheme.backgroundColor)
-      WebView(url: URL(string: "https://daringfireball.net/projects/markdown/"))
+      WebView(webPage)
+        .task {
+          webPage.load(
+            URLRequest(url: URL(string: "https://daringfireball.net/projects/markdown/")!))
+        }
     }
     .background(slideTheme.backgroundColor)
   }
