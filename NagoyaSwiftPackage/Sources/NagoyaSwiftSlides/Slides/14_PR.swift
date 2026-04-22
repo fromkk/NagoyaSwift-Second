@@ -4,9 +4,13 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct PR: View {
+struct PR: View, WebPageProviding {
   let converter = MarkdownToSlideConverter()
   @Environment(\.slideTheme) var slideTheme
+
+  let webPage = WebPage()
+
+  var webPages: [WebPage] { [webPage] }
 
   var body: some View {
     HStack {
@@ -17,10 +21,16 @@ struct PR: View {
         Text("Kanagawa.swift #3 @小田原")
           .font(slideTheme.headingH2Font)
 
-        WebView(url: URL(string: "https://japan-region-swift.connpass.com/event/389036/"))
+        WebView(webPage)
+          .task {
+            webPage.load(
+              URLRequest(url: URL(string: "https://japan-region-swift.connpass.com/event/389036/")!)
+            )
+          }
       }
     }
     .padding(slideTheme.contentPadding)
+    .background(slideTheme.backgroundColor)
   }
 
   var transition: AnyTransition = AnyTransition(AwesomeTransition())

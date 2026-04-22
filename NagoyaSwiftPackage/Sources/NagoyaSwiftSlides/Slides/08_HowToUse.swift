@@ -21,7 +21,8 @@ struct HowToUse: View {
         Text("How to Use swift-markdown")
           .font(slideTheme.headingH1Font)
 
-        converter.convertPage("""
+        converter.convertPage(
+          """
           ## 1. SPM で追加
 
           ```swift

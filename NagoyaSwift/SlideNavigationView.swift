@@ -112,10 +112,13 @@
           .padding()
 
           ScrollView {
-            Text(slideIndexController.currentScript.isEmpty ? "（スピーカーノートなし）" : slideIndexController.currentScript)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .multilineTextAlignment(.leading)
-              .padding()
+            Text(
+              slideIndexController.currentScript.isEmpty
+                ? "（スピーカーノートなし）" : slideIndexController.currentScript
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.leading)
+            .padding()
           }
           .frame(maxWidth: .infinity, maxHeight: .infinity)
         }

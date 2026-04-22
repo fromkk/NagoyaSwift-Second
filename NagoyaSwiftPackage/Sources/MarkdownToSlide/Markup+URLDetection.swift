@@ -29,7 +29,7 @@ private func urlFrom(markup: any Markup) -> URL? {
   if let text = markup as? Markdown.Text {
     let trimmed = text.string.trimmingCharacters(in: .whitespacesAndNewlines)
     if let url = URL(string: trimmed),
-      (url.scheme == "https" || url.scheme == "http"),
+      url.scheme == "https" || url.scheme == "http",
       url.host() != nil
     {
       return url
