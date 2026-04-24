@@ -294,7 +294,7 @@ private struct TableView: View {
   {
     // セルの内容からテキストを抽出
     let cellText = cell.children
-      .reduce(SwiftUI.Text("")) { $0 + $1.toInlineText }
+      .reduce(SwiftUI.Text("")) { Text("\($0)\($1.toInlineText)") }
 
     Group {
       if isHeader {
