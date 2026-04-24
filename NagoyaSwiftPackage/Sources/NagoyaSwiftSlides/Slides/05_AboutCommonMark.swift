@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct AboutCommonMark: View, WebPageProviding {
+struct AboutCommonMark: View {
   enum SlidePhase: Int, PhasedState {
     case initial
     case commonmark
@@ -16,9 +16,6 @@ struct AboutCommonMark: View, WebPageProviding {
   @Environment(\.slideTheme) var slideTheme
 
   let converter = MarkdownToSlideConverter()
-  let webPage = WebPage()
-
-  var webPages: [WebPage] { [webPage] }
 
   var script: String {
     switch phase {
@@ -36,7 +33,6 @@ struct AboutCommonMark: View, WebPageProviding {
   }
 
   var body: some View {
-
     VStack(alignment: .leading, spacing: 32) {
       if phase == .initial {
         SlideWrapper {
@@ -67,8 +63,7 @@ struct AboutCommonMark: View, WebPageProviding {
             )
             .transition(.opacity)
             .frame(width: proxy.size.width * 0.6)
-            WebView(webPage)
-              .task { webPage.load(URLRequest(url: URL(string: "https://commonmark.org/")!)) }
+            WebView(url: URL(string: "https://commonmark.org/"))
           }
         }
       }

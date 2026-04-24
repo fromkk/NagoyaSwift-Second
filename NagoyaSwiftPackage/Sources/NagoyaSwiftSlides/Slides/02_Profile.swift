@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct ProfileSlide: View, WebPageProviding {
+struct ProfileSlide: View {
   let converter = MarkdownToSlideConverter()
   @Environment(\.slideTheme) var slideTheme
 
@@ -13,12 +13,6 @@ struct ProfileSlide: View, WebPageProviding {
     case lastYear
   }
   @Phase var phase: SlidePhase
-
-  private let connpassWebPage = WebPage()
-
-  var webPages: [WebPage] {
-    [connpassWebPage]
-  }
 
   var body: some View {
     switch phase {
@@ -59,15 +53,7 @@ struct ProfileSlide: View, WebPageProviding {
             .aspectRatio(contentMode: .fit)
         }
 
-        WebView(connpassWebPage)
-          .task {
-            connpassWebPage.load(
-              URL(
-                string:
-                  "https://japan-region-swift.connpass.com/event/376480/participation/#participants"
-              )
-            )
-          }
+        WebView(url: URL(string: "https://japan-region-swift.connpass.com/event/376480/participation/"))
       }
       .padding(slideTheme.contentPadding)
       .background(slideTheme.backgroundColor)

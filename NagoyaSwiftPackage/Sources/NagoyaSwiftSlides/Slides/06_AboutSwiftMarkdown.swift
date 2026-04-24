@@ -4,13 +4,10 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct AboutSwiftMarkdown: View, WebPageProviding {
+struct AboutSwiftMarkdown: View {
   @Environment(\.slideTheme) var slideTheme
 
   let converter = MarkdownToSlideConverter()
-  let webPage = WebPage()
-
-  var webPages: [WebPage] { [webPage] }
 
   var script: String = """
     swift-markdownはAppleが開発しているオープンソースのMarkdownパーサーです。
@@ -34,10 +31,7 @@ struct AboutSwiftMarkdown: View, WebPageProviding {
           - [https://github.com/swiftlang/swift-markdown](https://github.com/swiftlang/swift-markdown)
           """)
       }
-      WebView(webPage)
-        .task {
-          webPage.load(URLRequest(url: URL(string: "https://github.com/swiftlang/swift-markdown")!))
-        }
+      WebView(url: URL(string: "https://github.com/swiftlang/swift-markdown"))
     }
     .background(slideTheme.backgroundColor)
   }

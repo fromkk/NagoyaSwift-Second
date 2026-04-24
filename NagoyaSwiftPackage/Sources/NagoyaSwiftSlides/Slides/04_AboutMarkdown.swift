@@ -4,7 +4,7 @@ import SwiftUI
 import WebKit
 
 @Slide
-struct AboutMarkdown: View, WebPageProviding {
+struct AboutMarkdown: View {
   @Environment(\.slideTheme) var slideTheme
 
   let markdown = """
@@ -19,9 +19,6 @@ struct AboutMarkdown: View, WebPageProviding {
     """
 
   let converter = MarkdownToSlideConverter()
-  let webPage = WebPage()
-
-  var webPages: [WebPage] { [webPage] }
 
   var script: String = """
     Markdown についてです。
@@ -33,11 +30,7 @@ struct AboutMarkdown: View, WebPageProviding {
     HStack {
       converter.convertPage(markdown)
         .background(slideTheme.backgroundColor)
-      WebView(webPage)
-        .task {
-          webPage.load(
-            URLRequest(url: URL(string: "https://daringfireball.net/projects/markdown/")!))
-        }
+      WebView(url: URL(string: "https://daringfireball.net/projects/markdown/"))
     }
     .background(slideTheme.backgroundColor)
   }
