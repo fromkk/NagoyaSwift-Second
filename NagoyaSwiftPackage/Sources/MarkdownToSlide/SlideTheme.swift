@@ -1,5 +1,15 @@
 import SwiftUI
 
+extension Color {
+  public static var systemBackground: Color {
+    #if os(macOS)
+    Color(.windowBackgroundColor)
+    #else
+    Color(.systemBackground)
+    #endif
+  }
+}
+
 /// SlideFeatureのカスタマイズ可能なテーマ
 public struct SlideTheme: @unchecked Sendable {
   // MARK: - Fonts
@@ -52,7 +62,7 @@ public struct SlideTheme: @unchecked Sendable {
     errorFont: Font = .system(size: 36),
     htmlBodyFontSize: CGFloat = 48,
     // Colors
-    backgroundColor: Color = Color(.systemBackground),
+    backgroundColor: Color = .systemBackground,
     primaryTextColor: Color = .primary,
     secondaryTextColor: Color = .secondary,
     accentColor: Color = .accentColor,
@@ -113,16 +123,19 @@ public struct SlideTheme: @unchecked Sendable {
 
   /// HTMLコンテンツ用のCSSスタイル文字列を生成
   public func generateHTMLCSS() -> String {
-    // SwiftUIのColorからUIColorに変換してRGB値を取得
+    // SwiftUIのColorからプラットフォームカラーに変換してRGB値を取得
     func colorToCSS(_ color: Color) -> String {
-      let uiColor = UIColor(color)
+      #if canImport(UIKit)
+      let nativeColor = UIColor(color)
+      #else
+      let nativeColor = NSColor(color).usingColorSpace(.deviceRGB) ?? NSColor.white
+      #endif
       var red: CGFloat = 0
       var green: CGFloat = 0
       var blue: CGFloat = 0
       var alpha: CGFloat = 0
-      uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-      return
-        "rgba(\(Int(red * 255)), \(Int(green * 255)), \(Int(blue * 255)), \(alpha))"
+      nativeColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+      return "rgba(\(Int(red * 255)), \(Int(green * 255)), \(Int(blue * 255)), \(alpha))"
     }
 
     let bodyColorCSS = colorToCSS(primaryTextColor)

@@ -27,10 +27,20 @@ struct NagoyaSwiftApp: App {
       .slideTheme(theme)
     }
     #if os(macOS)
-      .setupAsPresentationWindow(
-        Self.configuration.slideIndexController,
-        openWindow: {}
-      )
+      .windowStyle(.hiddenTitleBar)
+      .commands {
+        PresenterCommands(slideIndexController: Self.configuration.slideIndexController)
+      }
+    #endif
+    #if os(macOS)
+    WindowGroup("Presenter", id: "presenter") {
+      macOSPresenterView(
+        slideSize: Self.configuration.size,
+        slideIndexController: Self.configuration.slideIndexController
+      ) {
+        SlideRouterView(slideIndexController: Self.configuration.slideIndexController)
+      }
+    }
     #endif
   }
 }

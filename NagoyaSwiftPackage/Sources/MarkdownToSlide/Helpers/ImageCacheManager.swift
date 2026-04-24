@@ -1,6 +1,5 @@
 import CryptoKit
 import Foundation
-import UIKit
 
 /// 画像URLからダウンロードしてローカルキャッシュに保存するマネージャー
 @MainActor

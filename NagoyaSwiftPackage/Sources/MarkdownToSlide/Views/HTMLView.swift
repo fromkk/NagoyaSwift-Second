@@ -19,6 +19,7 @@ struct HTMLView: View {
   }
 }
 
+#if canImport(UIKit)
 private struct HTMLWebView: UIViewRepresentable {
   let htmlContent: String
   let theme: SlideTheme
@@ -34,6 +35,38 @@ private struct HTMLWebView: UIViewRepresentable {
   }
 
   func updateUIView(_ webView: WKWebView, context: Context) {
+    loadHTML(into: webView)
+  }
+
+  func makeCoordinator() -> Coordinator {
+    Coordinator(contentHeight: $contentHeight)
+  }
+}
+#else
+private struct HTMLWebView: NSViewRepresentable {
+  let htmlContent: String
+  let theme: SlideTheme
+  @Binding var contentHeight: CGFloat
+
+  func makeNSView(context: Context) -> WKWebView {
+    let webView = WKWebView()
+    webView.navigationDelegate = context.coordinator
+    webView.setValue(false, forKey: "drawsBackground")
+    return webView
+  }
+
+  func updateNSView(_ webView: WKWebView, context: Context) {
+    loadHTML(into: webView)
+  }
+
+  func makeCoordinator() -> Coordinator {
+    Coordinator(contentHeight: $contentHeight)
+  }
+}
+#endif
+
+extension HTMLWebView {
+  func loadHTML(into webView: WKWebView) {
     let cssStyle = theme.generateHTMLCSS()
 
     let html = """
@@ -51,10 +84,6 @@ private struct HTMLWebView: UIViewRepresentable {
       </html>
       """
     webView.loadHTMLString(html, baseURL: nil)
-  }
-
-  func makeCoordinator() -> Coordinator {
-    Coordinator(contentHeight: $contentHeight)
   }
 
   class Coordinator: NSObject, WKNavigationDelegate {
