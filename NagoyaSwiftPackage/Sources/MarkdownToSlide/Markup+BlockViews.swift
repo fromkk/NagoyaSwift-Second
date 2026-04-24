@@ -168,9 +168,9 @@ struct ImageView: View {
       // ローカルファイルパスの場合は同期的に読み込む
       if source.hasPrefix("/") {
         #if canImport(UIKit)
-        let nativeImage = UIImage(contentsOfFile: source).map { SwiftUI.Image(uiImage: $0) }
+          let nativeImage = UIImage(contentsOfFile: source).map { SwiftUI.Image(uiImage: $0) }
         #else
-        let nativeImage = NSImage(contentsOfFile: source).map { SwiftUI.Image(nsImage: $0) }
+          let nativeImage = NSImage(contentsOfFile: source).map { SwiftUI.Image(nsImage: $0) }
         #endif
         if let nativeImage {
           nativeImage

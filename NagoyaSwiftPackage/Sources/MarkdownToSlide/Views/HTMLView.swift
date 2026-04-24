@@ -20,49 +20,49 @@ struct HTMLView: View {
 }
 
 #if canImport(UIKit)
-private struct HTMLWebView: UIViewRepresentable {
-  let htmlContent: String
-  let theme: SlideTheme
-  @Binding var contentHeight: CGFloat
+  private struct HTMLWebView: UIViewRepresentable {
+    let htmlContent: String
+    let theme: SlideTheme
+    @Binding var contentHeight: CGFloat
 
-  func makeUIView(context: Context) -> WKWebView {
-    let webView = WKWebView()
-    webView.navigationDelegate = context.coordinator
-    webView.scrollView.isScrollEnabled = false
-    webView.isOpaque = false
-    webView.backgroundColor = .clear
-    return webView
-  }
+    func makeUIView(context: Context) -> WKWebView {
+      let webView = WKWebView()
+      webView.navigationDelegate = context.coordinator
+      webView.scrollView.isScrollEnabled = false
+      webView.isOpaque = false
+      webView.backgroundColor = .clear
+      return webView
+    }
 
-  func updateUIView(_ webView: WKWebView, context: Context) {
-    loadHTML(into: webView)
-  }
+    func updateUIView(_ webView: WKWebView, context: Context) {
+      loadHTML(into: webView)
+    }
 
-  func makeCoordinator() -> Coordinator {
-    Coordinator(contentHeight: $contentHeight)
+    func makeCoordinator() -> Coordinator {
+      Coordinator(contentHeight: $contentHeight)
+    }
   }
-}
 #else
-private struct HTMLWebView: NSViewRepresentable {
-  let htmlContent: String
-  let theme: SlideTheme
-  @Binding var contentHeight: CGFloat
+  private struct HTMLWebView: NSViewRepresentable {
+    let htmlContent: String
+    let theme: SlideTheme
+    @Binding var contentHeight: CGFloat
 
-  func makeNSView(context: Context) -> WKWebView {
-    let webView = WKWebView()
-    webView.navigationDelegate = context.coordinator
-    webView.setValue(false, forKey: "drawsBackground")
-    return webView
-  }
+    func makeNSView(context: Context) -> WKWebView {
+      let webView = WKWebView()
+      webView.navigationDelegate = context.coordinator
+      webView.setValue(false, forKey: "drawsBackground")
+      return webView
+    }
 
-  func updateNSView(_ webView: WKWebView, context: Context) {
-    loadHTML(into: webView)
-  }
+    func updateNSView(_ webView: WKWebView, context: Context) {
+      loadHTML(into: webView)
+    }
 
-  func makeCoordinator() -> Coordinator {
-    Coordinator(contentHeight: $contentHeight)
+    func makeCoordinator() -> Coordinator {
+      Coordinator(contentHeight: $contentHeight)
+    }
   }
-}
 #endif
 
 extension HTMLWebView {

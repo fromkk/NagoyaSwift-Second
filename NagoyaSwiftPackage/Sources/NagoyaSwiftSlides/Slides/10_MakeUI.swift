@@ -8,9 +8,26 @@ struct MakeUI: View {
 
   let converter = MarkdownToSlideConverter()
 
-  var script: String = """
-
-    """
+  var script: String {
+    switch phase {
+    case .initial:
+      return """
+        まず document に Markdown を渡します。
+        これだけでパースが完了します。
+        続いて、blockChildren から AnyView の配列を取得します。
+        """
+    case .block:
+      return """
+        BlockMarkup を受け取ったらハンドリングを行います。
+        見出しだったらフォントを大きくするとかそういうことをやっていきます。
+        """
+    case .inline:
+      return """
+        InlineMarkup を受け取ったらこちらもハンドリングを行います。
+        太字だったらフォントを太字にするとかそういうことをやっていきます。
+        """
+    }
+  }
 
   enum SlidePhase: Int, PhasedState {
     case initial
@@ -37,7 +54,8 @@ struct MakeUI: View {
               blockHandler($0)
             }
             ```
-            """)
+            """
+          )
         } else if phase == .block {
           converter.convertPage(
             """
@@ -52,7 +70,8 @@ struct MakeUI: View {
               }
             }
             ```
-            """)
+            """
+          )
         } else if phase == .inline {
           converter.convertPage(
             """
@@ -69,7 +88,8 @@ struct MakeUI: View {
               }
             }
             ```
-            """)
+            """
+          )
         }
       }
 

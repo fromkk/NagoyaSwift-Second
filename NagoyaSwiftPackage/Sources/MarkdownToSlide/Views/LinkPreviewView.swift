@@ -36,35 +36,35 @@ struct LinkPreviewView: View {
 }
 
 #if canImport(UIKit)
-private struct LPLinkViewRepresentable: UIViewRepresentable {
-  let metadata: LPLinkMetadata
-  @Binding var height: CGFloat
+  private struct LPLinkViewRepresentable: UIViewRepresentable {
+    let metadata: LPLinkMetadata
+    @Binding var height: CGFloat
 
-  func makeUIView(context: Context) -> LPLinkView {
-    LPLinkView(metadata: metadata)
-  }
+    func makeUIView(context: Context) -> LPLinkView {
+      LPLinkView(metadata: metadata)
+    }
 
-  func updateUIView(_ view: LPLinkView, context: Context) {
-    view.metadata = metadata
-    DispatchQueue.main.async {
-      height = view.intrinsicContentSize.height
+    func updateUIView(_ view: LPLinkView, context: Context) {
+      view.metadata = metadata
+      DispatchQueue.main.async {
+        height = view.intrinsicContentSize.height
+      }
     }
   }
-}
 #else
-private struct LPLinkViewRepresentable: NSViewRepresentable {
-  let metadata: LPLinkMetadata
-  @Binding var height: CGFloat
+  private struct LPLinkViewRepresentable: NSViewRepresentable {
+    let metadata: LPLinkMetadata
+    @Binding var height: CGFloat
 
-  func makeNSView(context: Context) -> LPLinkView {
-    LPLinkView(metadata: metadata)
-  }
+    func makeNSView(context: Context) -> LPLinkView {
+      LPLinkView(metadata: metadata)
+    }
 
-  func updateNSView(_ view: LPLinkView, context: Context) {
-    view.metadata = metadata
-    DispatchQueue.main.async {
-      height = view.intrinsicContentSize.height
+    func updateNSView(_ view: LPLinkView, context: Context) {
+      view.metadata = metadata
+      DispatchQueue.main.async {
+        height = view.intrinsicContentSize.height
+      }
     }
   }
-}
 #endif

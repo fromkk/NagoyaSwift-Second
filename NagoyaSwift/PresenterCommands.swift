@@ -15,6 +15,14 @@
         Button("Back") { slideIndexController.back() }
           .keyboardShortcut(.leftArrow, modifiers: [])
       }
+      CommandGroup(after: .importExport) {
+        Button("Export PDF") {
+          Task {
+            await SlidePDFExporter().exportWithSavePanel(slideIndexController: slideIndexController)
+          }
+        }
+        .keyboardShortcut("e", modifiers: [.command])
+      }
       CommandGroup(after: .windowList) {
         Button("Open Presenter") {
           openWindow(id: "presenter")

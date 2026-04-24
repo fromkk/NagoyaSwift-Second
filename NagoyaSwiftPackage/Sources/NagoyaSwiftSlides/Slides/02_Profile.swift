@@ -1,9 +1,10 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
+import WebKit
 
 @Slide
-struct ProfileSlide: View {
+struct ProfileSlide: View, WebPageProviding {
   let converter = MarkdownToSlideConverter()
   @Environment(\.slideTheme) var slideTheme
 
@@ -12,6 +13,12 @@ struct ProfileSlide: View {
     case lastYear
   }
   @Phase var phase: SlidePhase
+
+  private let connpassWebPage = WebPage()
+
+  var webPages: [WebPage] {
+    [connpassWebPage]
+  }
 
   var body: some View {
     switch phase {
@@ -31,35 +38,58 @@ struct ProfileSlide: View {
             let favorite = "Photography"
           }
           ```
-          """)
+          """
+        )
       }
     case .lastYear:
       HStack {
-        converter.convertPage(
-          """
-          ## 昨年
+        VStack(alignment: .leading) {
+          converter.convertPage(
+            """
+            ## 昨年
 
-          - Nagoya.swift #1 ではカメラマンとしてスタッフをしていました
-          - 今年は？？？
-          """
-        )
-        .frame(maxWidth: .infinity, alignment: .leading)
+            - Nagoya.swift #1 ではカメラマンとしてスタッフをしていました
+            - 今年は？？？
+            """
+          )
+          .frame(maxWidth: .infinity, alignment: .leading)
 
-        Image(.lastYear)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
+          Image(.lastYear)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+        }
+
+        WebView(connpassWebPage)
+          .task {
+            connpassWebPage.load(
+              URL(
+                string:
+                  "https://japan-region-swift.connpass.com/event/376480/participation/#participants"
+              )
+            )
+          }
       }
       .padding(slideTheme.contentPadding)
       .background(slideTheme.backgroundColor)
     }
   }
 
-  var script: String = """
-    植岡　和哉と申します。
-    iOSアプリを作る仕事をしています。
-    インターネットでは @fromkk というアカウントで活動しているのでよかったらフォローしてください。
-    カメラで写真を撮るのが好きです。
-    """
+  var script: String {
+    switch phase {
+    case .initial:
+      return """
+        植岡　和哉と申します。
+        iOSアプリを作る仕事をしています。
+        インターネットでは @fromkk というアカウントで活動しているのでよかったらフォローしてください。
+        カメラで写真を撮るのが好きです。
+        """
+    case .lastYear:
+      return """
+        ご存知の方もいるかもしれませんが、昨年はカメラマンとしてスタッフをしていました。
+        あれ？今年は見当たりませんね。
+        """
+    }
+  }
 
   var transition: AnyTransition = AnyTransition(AwesomeTransition())
 }
@@ -73,7 +103,8 @@ struct ProfileSlide: View {
     return SlideRouterView(
       slideIndexController: SlideIndexController(container: container) {
         ProfileSlide()
-      })
+      }
+    )
   }
 }
 
@@ -86,6 +117,7 @@ struct ProfileSlide: View {
     return SlideRouterView(
       slideIndexController: SlideIndexController(container: container) {
         ProfileSlide()
-      })
+      }
+    )
   }
 }

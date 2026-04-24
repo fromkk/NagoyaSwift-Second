@@ -33,14 +33,14 @@ struct NagoyaSwiftApp: App {
       }
     #endif
     #if os(macOS)
-    WindowGroup("Presenter", id: "presenter") {
-      macOSPresenterView(
-        slideSize: Self.configuration.size,
-        slideIndexController: Self.configuration.slideIndexController
-      ) {
-        SlideRouterView(slideIndexController: Self.configuration.slideIndexController)
+      WindowGroup("Presenter", id: "presenter") {
+        macOSPresenterView(
+          slideSize: Self.configuration.size,
+          slideIndexController: Self.configuration.slideIndexController
+        ) {
+          SlideRouterView(slideIndexController: Self.configuration.slideIndexController)
+        }
       }
-    }
     #endif
   }
 }

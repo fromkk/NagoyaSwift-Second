@@ -1,16 +1,19 @@
+import NagoyaSwiftSlides
+import PDFKit
+import SlideKit
+import SwiftUI
+
+@MainActor
+struct SlidePDFExporter {
+  let slideSize = SlideSize.standard16_9
+  private static let webPageLoadTimeout: Duration = .seconds(10)
+}
+
 #if canImport(UIKit)
-  import NagoyaSwiftSlides
-  import PDFKit
-  import SlideKit
-  import SwiftUI
   import UIKit
   import WebKit
 
-  @MainActor
-  struct SlidePDFExporter {
-    private let slideSize = SlideSize.standard16_9
-    private static let webPageLoadTimeout: Duration = .seconds(10)
-
+  extension SlidePDFExporter {
     func export(slideIndexController: SlideIndexController) async -> URL? {
       guard let pdfData = await createPDFData(slideIndexController: slideIndexController) else {
         return nil
@@ -83,6 +86,94 @@
 
     /// WebPage のロード完了を待機する（ロード中でなければ即リターン、最大10秒でタイムアウト）
     private func waitForWebPages(_ webPages: [WebPage]) async {
+      let loadingPages = webPages.filter { $0.isLoading }
+      guard !loadingPages.isEmpty else { return }
+
+      let deadline = ContinuousClock.now + Self.webPageLoadTimeout
+      while loadingPages.contains(where: { $0.isLoading }) {
+        guard ContinuousClock.now < deadline else { break }
+        try? await Task.sleep(for: .milliseconds(100))
+      }
+    }
+  }
+#endif
+
+#if os(macOS)
+  import AppKit
+  import UniformTypeIdentifiers
+  import WebKit
+
+  extension SlidePDFExporter {
+    func exportWithSavePanel(slideIndexController: SlideIndexController) async {
+      let panel = NSSavePanel()
+      panel.allowedContentTypes = [.pdf]
+      panel.nameFieldStringValue = "NagoyaSwift_\(Int(Date().timeIntervalSince1970)).pdf"
+
+      let response = await panel.begin()
+      guard response == .OK, let url = panel.url else { return }
+
+      guard let pdfData = await createPDFDataMac(slideIndexController: slideIndexController) else {
+        return
+      }
+
+      try? pdfData.write(to: url)
+    }
+
+    private func createPDFDataMac(slideIndexController: SlideIndexController) async -> Data? {
+      let pageRect = CGRect(origin: .zero, size: slideSize)
+
+      let window = NSWindow(
+        contentRect: NSRect(origin: CGPoint(x: -20000, y: -20000), size: slideSize),
+        styleMask: .borderless,
+        backing: .buffered,
+        defer: false
+      )
+
+      var images: [NSImage] = []
+
+      for slide in slideIndexController.slides {
+        let slideView = SlideScreen(slideSize: slideSize) {
+          AnyView(slide)
+        }
+        .environment(\.slideIndexController, slideIndexController)
+
+        let hostingView = NSHostingView(rootView: slideView)
+        hostingView.frame = pageRect
+        window.contentView = hostingView
+        window.orderBack(nil)
+
+        // .task モディファイアが発火して WebPage.load() が呼ばれるまで待つ
+        try? await Task.sleep(for: .milliseconds(300))
+
+        // WebPageProviding に準拠していればロード完了を待機（最大10秒）
+        if let provider = slide as? any WebPageProviding {
+          await waitForWebPagesMac(provider.webPages)
+        }
+
+        guard
+          let bitmapRep = hostingView.bitmapImageRepForCachingDisplay(in: pageRect)
+        else { continue }
+        hostingView.cacheDisplay(in: pageRect, to: bitmapRep)
+
+        let image = NSImage(size: slideSize)
+        image.addRepresentation(bitmapRep)
+        images.append(image)
+      }
+
+      window.orderOut(nil)
+
+      let pdfDocument = PDFDocument()
+      for (index, image) in images.enumerated() {
+        if let page = PDFPage(image: image) {
+          pdfDocument.insert(page, at: index)
+        }
+      }
+
+      return pdfDocument.dataRepresentation()
+    }
+
+    /// WebPage のロード完了を待機する（ロード中でなければ即リターン、最大10秒でタイムアウト）
+    private func waitForWebPagesMac(_ webPages: [WebPage]) async {
       let loadingPages = webPages.filter { $0.isLoading }
       guard !loadingPages.isEmpty else { return }
 

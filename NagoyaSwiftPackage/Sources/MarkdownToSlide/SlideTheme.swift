@@ -3,9 +3,9 @@ import SwiftUI
 extension Color {
   public static var systemBackground: Color {
     #if os(macOS)
-    Color(.windowBackgroundColor)
+      Color(.windowBackgroundColor)
     #else
-    Color(.systemBackground)
+      Color(.systemBackground)
     #endif
   }
 }
@@ -126,9 +126,9 @@ public struct SlideTheme: @unchecked Sendable {
     // SwiftUIのColorからプラットフォームカラーに変換してRGB値を取得
     func colorToCSS(_ color: Color) -> String {
       #if canImport(UIKit)
-      let nativeColor = UIColor(color)
+        let nativeColor = UIColor(color)
       #else
-      let nativeColor = NSColor(color).usingColorSpace(.deviceRGB) ?? NSColor.white
+        let nativeColor = NSColor(color).usingColorSpace(.deviceRGB) ?? NSColor.white
       #endif
       var red: CGFloat = 0
       var green: CGFloat = 0
