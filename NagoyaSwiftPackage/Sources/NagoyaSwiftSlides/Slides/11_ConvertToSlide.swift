@@ -1,7 +1,6 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
-import WebKit
 
 @Slide
 struct ConvertToSlide: View {
@@ -30,7 +29,7 @@ struct ConvertToSlide: View {
           - https://x.com/fromkk/status/2008524925607563362
           """)
       }
-      WebView(url: URL(string: "https://github.com/mtj0928/SlideKit/pull/47/changes"))
+      WebContentView(url: URL(string: "https://github.com/mtj0928/SlideKit/pull/47/changes")!)
     }
     .background(slideTheme.backgroundColor)
   }

@@ -1,7 +1,6 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
-import WebKit
 
 @Slide
 struct ProfileSlide: View {
@@ -53,7 +52,12 @@ struct ProfileSlide: View {
             .aspectRatio(contentMode: .fit)
         }
 
-        WebView(url: URL(string: "https://japan-region-swift.connpass.com/event/376480/participation/"))
+        WebContentView(
+          url: URL(
+            string:
+              "https://japan-region-swift.connpass.com/event/376480/participation/#participants"
+          )!
+        )
       }
       .padding(slideTheme.contentPadding)
       .background(slideTheme.backgroundColor)

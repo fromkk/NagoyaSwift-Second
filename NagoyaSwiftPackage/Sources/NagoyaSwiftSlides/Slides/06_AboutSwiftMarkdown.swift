@@ -1,7 +1,6 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
-import WebKit
 
 @Slide
 struct AboutSwiftMarkdown: View {
@@ -31,7 +30,7 @@ struct AboutSwiftMarkdown: View {
           - [https://github.com/swiftlang/swift-markdown](https://github.com/swiftlang/swift-markdown)
           """)
       }
-      WebView(url: URL(string: "https://github.com/swiftlang/swift-markdown"))
+      WebContentView(url: URL(string: "https://github.com/swiftlang/swift-markdown")!)
     }
     .background(slideTheme.backgroundColor)
   }

@@ -1,7 +1,6 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
-import WebKit
 
 @Slide
 struct AboutMarkdown: View {
@@ -30,7 +29,7 @@ struct AboutMarkdown: View {
     HStack {
       converter.convertPage(markdown)
         .background(slideTheme.backgroundColor)
-      WebView(url: URL(string: "https://daringfireball.net/projects/markdown/"))
+      WebContentView(url: URL(string: "https://daringfireball.net/projects/markdown/")!)
     }
     .background(slideTheme.backgroundColor)
   }

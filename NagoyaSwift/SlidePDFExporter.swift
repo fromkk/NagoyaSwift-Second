@@ -11,7 +11,6 @@ struct SlidePDFExporter {
 
 #if canImport(UIKit)
   import UIKit
-  import WebKit
 
   extension SlidePDFExporter {
     func export(slideIndexController: SlideIndexController) async -> URL? {
@@ -40,10 +39,13 @@ struct SlidePDFExporter {
 
       var images: [UIImage] = []
       for slide in slideIndexController.slides {
+        let tracker = WebPageLoadingTracker()
+
         let slideView = SlideScreen(slideSize: slideSize) {
           AnyView(slide)
         }
         .environment(\.slideIndexController, slideIndexController)
+        .environment(\.webPageLoadingTracker, tracker)
 
         let hostingController = UIHostingController(rootView: slideView)
         hostingController.view.frame = pageRect.offsetBy(dx: 10000, dy: 10000)
@@ -54,13 +56,11 @@ struct SlidePDFExporter {
         hostingController.view.setNeedsLayout()
         hostingController.view.layoutIfNeeded()
 
-        // .task モディファイアが発火して WebPage.load() が呼ばれるまで待つ
+        // WebContentView の makeUIView が呼ばれて load が開始されるまで待つ
         try? await Task.sleep(for: .milliseconds(300))
 
-        // WebPageProviding に準拠していればロード完了を待機（最大10秒）
-        if let provider = slide as? any WebPageProviding {
-          await waitForWebPages(provider.webPages)
-        }
+        // WebView のロード完了を待機（最大10秒）
+        await waitForTracker(tracker)
 
         let format = UIGraphicsImageRendererFormat()
         format.scale = 2.0
@@ -84,13 +84,9 @@ struct SlidePDFExporter {
       return pdfData.length > 0 ? pdfData as Data : nil
     }
 
-    /// WebPage のロード完了を待機する（ロード中でなければ即リターン、最大10秒でタイムアウト）
-    private func waitForWebPages(_ webPages: [WebPage]) async {
-      let loadingPages = webPages.filter { $0.isLoading }
-      guard !loadingPages.isEmpty else { return }
-
+    private func waitForTracker(_ tracker: WebPageLoadingTracker) async {
       let deadline = ContinuousClock.now + Self.webPageLoadTimeout
-      while loadingPages.contains(where: { $0.isLoading }) {
+      while !tracker.isAllLoaded {
         guard ContinuousClock.now < deadline else { break }
         try? await Task.sleep(for: .milliseconds(100))
       }
@@ -101,7 +97,6 @@ struct SlidePDFExporter {
 #if os(macOS)
   import AppKit
   import UniformTypeIdentifiers
-  import WebKit
 
   extension SlidePDFExporter {
     func exportWithSavePanel(slideIndexController: SlideIndexController) async {
@@ -132,23 +127,24 @@ struct SlidePDFExporter {
       var images: [NSImage] = []
 
       for slide in slideIndexController.slides {
+        let tracker = WebPageLoadingTracker()
+
         let slideView = SlideScreen(slideSize: slideSize) {
           AnyView(slide)
         }
         .environment(\.slideIndexController, slideIndexController)
+        .environment(\.webPageLoadingTracker, tracker)
 
         let hostingView = NSHostingView(rootView: slideView)
         hostingView.frame = pageRect
         window.contentView = hostingView
         window.orderBack(nil)
 
-        // .task モディファイアが発火して WebPage.load() が呼ばれるまで待つ
+        // WebContentView の makeNSView が呼ばれて load が開始されるまで待つ
         try? await Task.sleep(for: .milliseconds(300))
 
-        // WebPageProviding に準拠していればロード完了を待機（最大10秒）
-        if let provider = slide as? any WebPageProviding {
-          await waitForWebPagesMac(provider.webPages)
-        }
+        // WebView のロード完了を待機（最大10秒）
+        await waitForTrackerMac(tracker)
 
         guard
           let bitmapRep = hostingView.bitmapImageRepForCachingDisplay(in: pageRect)
@@ -172,13 +168,9 @@ struct SlidePDFExporter {
       return pdfDocument.dataRepresentation()
     }
 
-    /// WebPage のロード完了を待機する（ロード中でなければ即リターン、最大10秒でタイムアウト）
-    private func waitForWebPagesMac(_ webPages: [WebPage]) async {
-      let loadingPages = webPages.filter { $0.isLoading }
-      guard !loadingPages.isEmpty else { return }
-
+    private func waitForTrackerMac(_ tracker: WebPageLoadingTracker) async {
       let deadline = ContinuousClock.now + Self.webPageLoadTimeout
-      while loadingPages.contains(where: { $0.isLoading }) {
+      while !tracker.isAllLoaded {
         guard ContinuousClock.now < deadline else { break }
         try? await Task.sleep(for: .milliseconds(100))
       }

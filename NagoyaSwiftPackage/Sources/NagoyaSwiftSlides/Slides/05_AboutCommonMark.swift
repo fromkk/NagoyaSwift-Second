@@ -1,7 +1,6 @@
 import MarkdownToSlide
 import SlideKit
 import SwiftUI
-import WebKit
 
 @Slide
 struct AboutCommonMark: View {
@@ -63,7 +62,7 @@ struct AboutCommonMark: View {
             )
             .transition(.opacity)
             .frame(width: proxy.size.width * 0.6)
-            WebView(url: URL(string: "https://commonmark.org/"))
+            WebContentView(url: URL(string: "https://commonmark.org/")!)
           }
         }
       }
