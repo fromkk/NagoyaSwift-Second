@@ -24,7 +24,7 @@ struct MakeUI: View {
     case .inline:
       return """
         InlineMarkup を受け取ったらこちらもハンドリングを行います。
-        太字だったらフォントを太字にするとかそういうことをやっていきます。
+        Strongだったらフォントを太字にするとかそういうことをやっていきます。
         """
     }
   }

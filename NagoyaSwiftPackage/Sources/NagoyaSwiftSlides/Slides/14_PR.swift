@@ -26,6 +26,13 @@ struct PR: View {
   }
 
   var transition: AnyTransition = AnyTransition(AwesomeTransition())
+
+  var script: String = """
+    最後に宣伝です。
+    といってもすでに埋まってるんですが、ハロウィーンの日に Kanagawa.swift #3 を小田原で開催します。
+    もし興味あるよーという方がいましたら僕かすぎーさんまでお声がけください。
+    以上です。ご清聴ありがとうございました。
+    """
 }
 
 #Preview {

@@ -12,7 +12,6 @@ struct Summary: View {
     そして Markdown や CommonMark を紹介し、
     swift-markdown で Block や Inline をハンドリングして UI を作成して、
     SlideKit に PR を出して事前に生成した UI でもスライド対応できるようにしました。
-    以上です。ご清聴ありがとうございました。
     """
 
   var body: some View {
