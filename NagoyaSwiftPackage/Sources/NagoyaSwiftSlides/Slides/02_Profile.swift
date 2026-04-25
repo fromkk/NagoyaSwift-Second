@@ -10,6 +10,7 @@ struct ProfileSlide: View {
   enum SlidePhase: Int, PhasedState {
     case initial
     case lastYear
+    case apply
   }
   @Phase var phase: SlidePhase
 
@@ -34,7 +35,7 @@ struct ProfileSlide: View {
           """
         )
       }
-    case .lastYear:
+    case .lastYear, .apply:
       HStack {
         VStack(alignment: .leading) {
           converter.convertPage(
@@ -43,7 +44,7 @@ struct ProfileSlide: View {
 
             - Nagoya.swift #1 ではカメラマンとしてスタッフをしていました
             - 今年は？？？
-            """
+            """ + (phase == .lastYear ? "" : "\n- 登壇者として申し込むことにしました")
           )
           .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -76,8 +77,10 @@ struct ProfileSlide: View {
     case .lastYear:
       return """
         ご存知の方もいるかもしれませんが、昨年はカメラマンとしてスタッフをしていました。
-        あれ？今年は見当たりませんね。
+        今年は声がかからなかったので
         """
+    case .apply:
+      return "登壇者として申し込むことにしました"
     }
   }
 
@@ -111,3 +114,19 @@ struct ProfileSlide: View {
     )
   }
 }
+
+
+#Preview("apply") {
+  PresentationView(slideSize: SlideSize.standard16_9) {
+    let container = ObservableObjectContainer()
+    _ = container.resolve {
+      PhasedStateStore<ProfileSlide.SlidePhase>(.apply)
+    }
+    return SlideRouterView(
+      slideIndexController: SlideIndexController(container: container) {
+        ProfileSlide()
+      }
+    )
+  }
+}
+
