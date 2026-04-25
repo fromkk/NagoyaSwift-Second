@@ -40,7 +40,7 @@ struct MakeUI: View {
   var body: some View {
     SlideWrapper {
       VStack {
-        Text("Concept")
+        Text("Implementation")
           .frame(maxWidth: .infinity, alignment: .leading)
           .font(slideTheme.headingH2Font)
           .padding(slideTheme.contentPadding)

@@ -13,6 +13,7 @@ public struct SlideConfiguration {
     AboutCommonMark()
     AboutSwiftMarkdown()
     AboutStructure()
+    Concept()
     HowToUse()
     AboutParse()
     MakeUI()
