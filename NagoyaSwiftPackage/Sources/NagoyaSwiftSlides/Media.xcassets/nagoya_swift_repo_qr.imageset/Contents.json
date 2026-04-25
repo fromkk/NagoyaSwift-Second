@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "nagoya_swift_repo_qr.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
